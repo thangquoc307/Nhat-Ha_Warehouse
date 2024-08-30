@@ -1,0 +1,130 @@
+.table-switch {
+    display: grid;
+    position: relative;
+    grid-template-columns: 50px 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+            "none table"
+            "button table";
+}
+.table-switch>div:nth-child(1) {
+    background-color: var(--color-0);
+    grid-area: button;
+    border-bottom-left-radius: 20px;
+    border-top-left-radius: 20px;
+    position: relative;
+    border-top: var(--border-normal);
+    border-left: var(--border-normal);
+    border-bottom: var(--border-normal);
+    display: grid;
+    padding: 20px 10px;
+    gap: 10px;
+
+}
+.table-switch>div:nth-child(2) {
+    background-color: var(--color-0);
+    grid-area: table;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top: var(--border-normal);
+    border-right: var(--border-normal);
+    border-bottom: var(--border-normal);
+    position: relative;
+    padding: 20px 50px;
+}
+.table-switch>div:nth-child(1):before {
+    content: "";
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: var(--color-0);
+    left: 20px;
+    top: -30px;
+}
+.table-switch>div:nth-child(1):after {
+    content: "";
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background-color: var(--color-3);
+    left: 20px;
+    top: -30px;
+    border-bottom-right-radius: 100%;
+    border-bottom: var(--border-normal);
+    border-right: var(--border-normal);
+    z-index: 1;
+}
+.table-switch>div:nth-child(2):before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: calc(50% - 29px);
+    top: 0;
+    left: 0;
+    border-top-left-radius: 20px;
+    border-left: var(--border-normal);
+}
+.table-switch>div:nth-child(1)>button {
+    border: var(--border-normal);
+    border-radius: 50px;
+    background-color: var(--color-3);
+    transition-duration: 0.2s;
+}
+.table-switch>div:nth-child(1)>button:hover {
+    transition-duration: 0.2s;
+    scale: 1.05;
+    background-color: var(--color-5);
+    color: var(--color-0);
+}
+.table-switch-button-active {
+    background-color: var(--color-1) !important;
+    color: var(--color-0) !important;
+    pointer-events: none;
+}
+.search-input {
+    width: 50%;
+    float: right;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+#page-table-body>tr>td:nth-last-child(1) {
+    display: grid;
+    grid-template-columns: repeat(2, 40px);
+}
+#page-table-body>tr>td:nth-last-child(1)>span {
+    font-size: 30px !important;
+    line-height: normal;
+    transition-duration: 0.2s;
+    cursor: pointer;
+}
+#page-table-body>tr>td:nth-last-child(1)>span:hover {
+    scale: 1.1;
+    transition-duration: 0.2s;
+}
+#page-table-body>tr>td:nth-last-child(1)>span:nth-child(1) {
+    color: var(--color-6);
+}
+#page-table-body>tr>td:nth-last-child(1)>span:nth-child(2) {
+    color: var(--color-1);
+}
+#table-button-add {
+    padding: 5px 15px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 20px;
+    left: 100px;
+    border: var(--border-normal);
+    background-color: var(--color-6);
+    color: var(--color-0);
+    transition-duration: 0.2s;
+}
+#table-button-add:hover {
+    color: var(--color-0);
+    background-color: var(--color-5);
+    transition-duration: 0.2s;
+}

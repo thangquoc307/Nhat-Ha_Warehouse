@@ -1,0 +1,45 @@
+.table-page {
+    display: grid;
+    background-color: var(--color-0);
+    grid-template-columns: 1fr 100px;
+    padding: 20px 0 20px 30px ;
+    border: 1px solid black;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    gap: 30px;
+    background-image: url("../LQT-Logo/rec-logo-gray.png");
+    background-repeat: no-repeat;
+    background-size: 100px;
+    background-position: bottom right;
+}
+.table-page>div:nth-last-child(1) {
+    border-left: 1px dashed var(--color-3);
+
+}
+.table-page>div:nth-last-child(1)>div {
+    margin: 5px auto;
+    width: 35px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    border: var(--color-4) solid 1px ;
+
+}
+.table-page>div:nth-last-child(1)>div:hover {
+    transition-duration: 0.2s;
+    background-color: var(--color-2);
+}
+.table-page>table>thead>tr>th {
+    border-bottom: 1px var(--color-3) dashed;
+}
+.table-page>table td {
+    height: 35px;
+}
+.table-page>table th {
+    height: 40px;
+}
+

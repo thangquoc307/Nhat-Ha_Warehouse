@@ -1,0 +1,16 @@
+.access-denied-image {
+    display: flex;
+}
+.access-denied-image>img {
+    width: calc(30vw);
+    margin: 50px auto 20px;
+}
+.access-denied-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+}
+.access-denied-button>span {
+    font-size: 25px;
+}

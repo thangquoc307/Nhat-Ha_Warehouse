@@ -1,0 +1,78 @@
+.form-signin {
+    width: 500px;
+    top: calc(50px + var(--header-height));
+    left: calc(50vw - 250px);
+    border: var(--border-normal);
+    padding: 50px 40px 80px;
+    position: fixed;
+    overflow: hidden;
+    background-image: url("../LQT-Logo/rec-logo-gray.png");
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 120px;
+    animation: ease-in-out 0.5s topSlide;
+}
+.button-signin {
+    width: 100%;
+    transition-duration: 0.2s;
+    height: 40px;
+    border: var(--border-normal);
+}
+.button-forgot {
+    border: none;
+    position: absolute;
+    width: 100%;
+    height: 60px;
+    bottom: 0;
+    left: 0;
+    transition-duration: 0.2s;
+}
+.button-signin:hover,
+.button-forgot:hover {
+    scale: 1.05;
+    background-color: #151018;
+    color: white;
+    transition-duration: 0.2s;
+}
+.form-signin p {
+    text-align: right;
+}
+.form-signup {
+    width: 800px;
+    top: 50px;
+    left: calc(50vw - 400px);
+    border: var(--border-normal);
+    padding: 50px 40px;
+    position: fixed;
+    overflow: hidden;
+    background-image: url("../LQT-Logo/rec-logo-gray.png");
+    background-position: top right;
+    background-repeat: no-repeat;
+    background-size: 120px;
+    animation: ease-in-out 0.5s topSlide;
+}
+.form-signup>div {
+    margin-top: 15px;
+}
+.form-signup button {
+    display: flex;
+    gap: 5px;
+    background-color: var(--color-3);
+    width: 120px;
+    height: 35px;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--color-5);
+    border-radius: 25px;
+    transition-duration: 0.2s;
+}
+.form-signup button:nth-last-child(1) {
+    background-color: var(--color-1);
+    color: var(--color-0);
+}
+.form-signup button:hover {
+    scale: 1.05;
+    background-color: var(--color-5);
+    color: var(--color-0);
+    transition-duration: 0.2s;
+}

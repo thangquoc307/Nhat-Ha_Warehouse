@@ -1,0 +1,57 @@
+#page-table-pageable {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+
+}
+#page-table-pageable>div {
+    float: right;
+    height: 40px;
+    aspect-ratio: 1/1;
+    border-radius: 10px;
+    color: var(--color-5);
+    background-color: var(--color-0);
+    border: var(--border-normal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: normal;
+    font-size: 18px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+.boundarybutton-active {
+    background-color: var(--color-4) !important;
+    color: var(--color-0) !important;
+}
+.boundarybutton-active:hover {
+    background-color: var(--color-5) !important;
+}
+.boundarybutton-inactive {
+    background-color: var(--color-3) !important;
+    color: var(--color-0) !important;
+    cursor: default !important;
+}
+.boundarybutton-inactive:hover {
+    background-color: var(--color-3) !important;
+    color: var(--color-0) !important;
+}
+
+#page-table-pageable>div:hover {
+    color: var(--color-0);
+    background-color: var(--color-2);
+    transition-duration: 0.2s;
+}
+.current-page {
+    background-color: var(--color-1) !important;
+    color: var(--color-0) !important;
+    cursor: default !important;
+}
+.current-page:hover {
+    background-color: var(--color-1) !important;
+    color: var(--color-0) !important;
+}
+
+
