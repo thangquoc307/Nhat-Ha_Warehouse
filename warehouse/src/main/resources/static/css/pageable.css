@@ -1,16 +1,13 @@
-#page-table-pageable {
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+#content-table-pageable {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 5px;
+    padding: 15px 10px;
 
 }
-#page-table-pageable>div {
-    float: right;
+#content-table-pageable>div {
     height: 40px;
-    aspect-ratio: 1/1;
-    border-radius: 10px;
+    border-radius: 20px;
     color: var(--color-5);
     background-color: var(--color-0);
     border: var(--border-normal);
@@ -39,7 +36,7 @@
     color: var(--color-0) !important;
 }
 
-#page-table-pageable>div:hover {
+#content-table-pageable>div:hover {
     color: var(--color-0);
     background-color: var(--color-2);
     transition-duration: 0.2s;

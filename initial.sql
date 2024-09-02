@@ -167,15 +167,31 @@ select n.note, n.partner, n.release_date, n.so, i.description, i.part_number, s.
 join items i on n.id = i.stock_node_id
 left join salers s on n.sale_id = s.id
 left join items_serials sr on i.id = sr.item_id
-where i.description like '%%'
+where (i.description like '%%'
 or i.part_number like '%%'
 or sr.serial like '%%'
 or s.name like '%%'
 or n.partner like '%%'
-or n.so like '%%'
+or n.so like '%%')
+and (isnull(null) or n.release_date >= '2024-07-30')
+and (isnull(null) or n.release_date <= '2024-08-06')
+and n.warehouse_id = 1
+and (n.is_delete = 0 and i.is_delete = 0)
 group by i.id, n.release_date, n.so
 order by n.release_date desc, n.so;
 
-select * from items
+select * from items;
 
+select id, name from warehouses where is_delete = 0;
+
+select i.* from items i
+left join items_serials s on i.id = s.item_id
+where i.stock_node_id = 20 and i.is_delete = 0;
+
+select s.id, s.serial, st.name status from items_serials s
+join items i on i.id = s.item_id
+join status st on st.id = s.status_id
+where i.is_delete = 0 and s.item_id = 1;
+
+select s.id, s.name from salers s where s.is_delete = 0
 

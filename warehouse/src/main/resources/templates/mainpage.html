@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Nhật Hạ Wearhouse</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/mainpage.css">
+    <link rel="stylesheet" href="/css/tablecustom.css">
+    <link rel="stylesheet" href="/css/pageable.css">
+    <link rel="stylesheet" href="/css/displayDetail.css">
+    <link rel="stylesheet" href="/bootstrap/bootstrap.css">
+
+    <script src="/jquery-3.7.1.min.js"></script>
+    <script src="/bootstrap/bootstrap.bundle.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/mainpage.js"></script>
+    <script src="/js/popupCrud.js"></script>
+</head>
+<body class="color3">
+<div th:replace="template::header"></div>
+<div class="data-mainpage">
+    <div class="color0">
+        <div class="color0">
+            <div id="content-table-pageable"></div>
+            <div class="button-add-stock">
+                <div class="material-symbols-outlined">add</div>
+            </div>
+        </div>
+        <div class="table-title">
+            <div class="input-group">
+                <span class="input-group-text material-symbols-outlined">warehouse</span>
+                <select class="form-select" id="warehouse-select" onchange="pageableLoad(0)">
+                    <option th:each="warehouse : ${warehouses}"
+                            th:value="${warehouse.getid()}"
+                            th:text="${warehouse.getName()}"></option>
+                </select>
+            </div>
+            <h4 class="targetText">THÔNG TIN XUẤT/NHẬP KHO</h4>
+        </div>
+        <div class="search-tool">
+            <div class="input-group">
+                <span class="material-symbols-outlined input-group-text">
+                    calendar_month</span>
+                <input id="start-date-input" type="date" class="form-control" onchange="pageableLoad(0)">
+                <input id="end-date-input" type="date" class="form-control" onchange="pageableLoad(0)">
+            </div>
+            <div class="input-group">
+                <span class="input-group-text material-symbols-outlined">search</span>
+                <input id="search-input" type="text" class="form-control"
+                       placeholder="S.O, Tên Saler, Partner, Mã hàng, Thiết bị, Serial,..."
+                       onkeyup="searchingData()">
+            </div>
+        </div>
+        <div class="pt-3">
+            <table class="table-custom">
+                <thead>
+                <tr>
+                    <th colspan="2">Ngày xuất</th>
+                    <th>Số SO</th>
+                    <th>Partner</th>
+                    <th>Mã hàng</th>
+                    <th>Thiết bị</th>
+                    <th>SL</th>
+                    <th>Saler</th>
+                    <th>Ghi chú</th>
+                </tr>
+                </thead>
+                <tbody id="stock-data"></tbody>
+            </table>
+        </div>
+        <div class="option-control">
+            <div><span class="material-symbols-outlined">warehouse</span> - Warehouse Manage</div>
+            <div><span class="material-symbols-outlined">group</span> - Saler Manage</div>
+            <div><span class="material-symbols-outlined">compare</span> - Compare</div>
+        </div>
+    </div>
+    <div class="color0 display-detail">
+        <div class="control-bar">
+            <div class="material-symbols-outlined">refresh</div>
+            <div class="material-symbols-outlined">add</div>
+            <div class="material-symbols-outlined">edit</div>
+            <div class="material-symbols-outlined">delete</div>
+        </div>
+        <h5 class="targetText pe-2">CHI TIẾT PHIẾU XUẤT </h5>
+        <div id="line-detail" class="color3 scroll-custom">
+            <img src="/alert_image/204.svg">
+        </div>
+    </div>
+</div>
+<div id="popup"></div>
+
+</body>
+</html>

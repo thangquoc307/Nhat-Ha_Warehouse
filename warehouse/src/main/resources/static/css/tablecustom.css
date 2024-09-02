@@ -1,5 +1,5 @@
 .table-custom {
-    background-color: var(--color-0);
+    background-color: rgba(255, 255, 255, 0.8);
     border-left: var(--border-normal);
     border-top: var(--border-normal);
     width: 100%;
@@ -12,54 +12,88 @@
 .table-custom td {
     padding: 5px 10px;
 }
-.table-custom td:nth-child(1) {
+.table-month,
+.table-count {
     width: 50px;
-    text-align: center;
+    max-width: 50px;
+    min-width: 50px;
+    font-weight: bold;
 }
-.table-custom td:nth-child(2),
-.table-custom td:nth-child(3),
-.table-custom td:nth-child(5) {
+.table-partnumber,
+.table-so {
+    font-weight: bold;
     width: 150px;
-    text-align: center;
+    max-width: 150px;
+    min-width: 150px;
 }
-.table-custom td:nth-child(6) {
-    width: 100px;
-}
-.table-custom td:nth-child(4) {
-    width: 1fr;
-}
-.table-custom th {
-    text-align: center;
-}
-.table-custom>tbody>tr:nth-child(odd)>td {
-    background-color: var(--color-3);
-}
-.table-custom>tbody>tr>td:nth-last-child(1)>div {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
+.table-so>div {
+    display: flex;
+    justify-content: left;
     gap: 10px;
 }
-.table-custom>tbody>tr>td:nth-last-child(1)>div>span {
+.table-so>div>div {
+    background-color: var(--color-2);
+}
+.table-date,
+.table-partner,
+.table-saler {
+    width: 100px;
+    max-width: 100px;
+    min-width: 100px;
+}
+.table-description {
+    width: 250px;
+    max-width: 250px;
+    min-width: 250px;
+}
+.table-note {
+    width: 200px;
+    max-width: 200px;
+    min-width: 200px;
+}
+.table-action {
+    width: 90px;
+    max-width: 90px;
+    min-width: 90px;
+}
+.table-action>div {
+    display: flex;
     justify-content: center;
     align-items: center;
+    gap: 5px;
+}
+.table-so>div>div,
+.table-action>div>div {
     border: var(--border-normal);
-    text-align: center;
+    border-radius: 5px;
+    width: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
-    transition-duration: 0.2s;
-    aspect-ratio: 1/1;
-    border-radius: 50%;
     color: var(--color-0);
-}
-.table-custom>tbody>tr>td:nth-last-child(1)>div>span:hover {
     transition-duration: 0.2s;
-    scale: 1.1;
 }
-.table-custom>tbody>tr>td:nth-last-child(1)>div>span:nth-child(1) {
-    background-color: var(--color-6);
+.table-action>div>div:nth-child(1) {
+    background-color: var(--color-4);
 }
-.table-custom>tbody>tr>td:nth-last-child(1)>div>span:nth-child(2) {
+.table-action>div>div:nth-child(2) {
     background-color: var(--color-1);
 }
+.table-so>div>div:hover,
+.table-action>div>div:hover {
+    scale: 1.1;
+    transition-duration: 0.2s;
+    background-color: var(--color-5);
+}
+
+.table-custom th {
+    text-align: center;
+    background-color: var(--color-4);
+    color: var(--color-0);
+}
+
+
 #no-content-alert {
     text-align: center;
     display: table-cell !important;
@@ -67,4 +101,56 @@
 }
 #no-content-alert>img {
     height: 250px;
+}
+.active-icon {
+    background-color: var(--color-1) !important;
+    pointer-events: none;
+    scale: 1.1;
+}
+.option-control {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.option-control>div {
+    padding: 5px 20px;
+    border-radius: 20px;
+    border: var(--border-normal);
+    display: flex;
+    flex-direction: row;
+    background-color: var(--color-4);
+    color: var(--color-0);
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+.option-control>div:hover {
+    transition-duration: 0.2s;
+    background-color: var(--color-2)
+}
+.button-add-stock {
+    border-top: var(--border-grey);
+    width: 100%;
+    aspect-ratio: 1/1;
+}
+.button-add-stock>div {
+    width: 40px;
+    aspect-ratio: 1/1;
+    background-color: var(--color-6);
+    color: var(--color-0);
+    margin: 15px auto;
+    border-radius: 50%;
+    border: var(--border-normal);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+.button-add-stock>div:hover {
+    transition-duration: 0.2s;
+    scale: 1.1;
+    background-color: var(--color-5);
 }

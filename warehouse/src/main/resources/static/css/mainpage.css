@@ -1,103 +1,158 @@
 .data-mainpage {
     display: grid;
-    gap: 30px;
-    grid-template-columns: 4fr 6fr;
-    grid-template-areas: "table1 table1" "table2 table3";
+    row-gap: 30px;
+    column-gap: 50px;
+    grid-template-columns: 1fr 350px;
+    grid-template-rows: 50px 1fr;
+    grid-template-areas: "table1 none" "table1 table2";
+    height: calc(100vh - var(--header-height));
+    min-height: 700px;
 }
 .data-mainpage>div:nth-child(1) {
-    height: 330px;
     grid-area: table1;
-    margin: 20px 20px 0;
+    margin: 20px 20px;
+    border-radius: 30px 0 30px 30px;
+    position: relative;
+    border-top: var(--border-normal);
+    border-left: var(--border-normal);
+    border-bottom: var(--border-normal);
+    background-image: url("../LQT-Logo/r-logo-gray.png");
+    background-size: 150px;
+    background-repeat: no-repeat;
+    background-position-x: calc(100% - 30px);
+    background-position-y: calc(100% - 30px);
+    padding: 30px;
+    display: grid;
+    grid-template-rows: 30px 30px 1fr;
+    gap: 20px;
 }
+.data-mainpage>div:nth-child(1)>div:nth-child(1) {
+    position: absolute;
+    width: 60px;
+    height: 325px;
+    border-radius: 0 30px 30px 0;
+    right: -59px;
+    top: -1px;
+    border-top: var(--border-normal);
+    border-right: var(--border-normal);
+    border-left: var(--border-grey);
+}
+.data-mainpage>div:nth-child(1):before {
+    content: "";
+    position: absolute;
+    border-bottom-right-radius: 30px;
+    right: 0;
+    bottom: -1px;
+    width: 30px;
+    height: calc(100% - 300px - 28px);
+    border-bottom: var(--border-normal);
+    border-right: var(--border-normal);
+}
+.data-mainpage>div:nth-child(1):after {
+    content: "";
+    position: absolute;
+    right: -29px;
+    top: 324px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-0);
+    border-left: var(--border-grey);
+
+}
+.data-mainpage>div:nth-child(1)>div:nth-child(1):before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    bottom: -30px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--color-3);
+    border-top-left-radius: 100%;
+    border-top: var(--border-normal);
+    border-left: var(--border-normal);
+    z-index: 1;
+}
+.data-mainpage>div:nth-child(1)>div:nth-child(1):after {
+    content: "";
+    position: absolute;
+    right: -1px;
+    bottom: -1px;
+    height: 30px;
+    width: calc(100% - 28px);
+    border-bottom-right-radius: 30px;
+    border-bottom: var(--border-normal);
+    border-right: var(--border-normal);
+ }
 .data-mainpage>div:nth-child(2) {
-    padding: 40px;
     grid-area: table2;
     position: relative;
-    height: calc(100vh - var(--header-height) - 330px - 20px - 30px);
-    border-right: 1px solid var(--color-5);
-    border-top-right-radius: 50px;
+    border-top-left-radius: 30px;
+    border-top: var(--border-normal);
+    padding: 20px 0 0 10px;
 }
 .data-mainpage>div:nth-child(2):before {
     content: "";
+    width: 30px;
+    height: calc(100% - 158px);
     position: absolute;
-    top: 0;
-    right: -1px;
-    width: calc(100% - 48px);
-    height: 50px;
-    border-top-right-radius: 50px;
-    border-right: 1px solid var(--color-5);
-    border-top: 1px solid var(--color-5);
+    top: -1px;
+    left: 0;
+    border-top-left-radius: 30px;
+    border-top: var(--border-normal);
+    border-left: var(--border-normal);
 }
 .data-mainpage>div:nth-child(2):after {
-    content: "";
-    position: absolute;
-    top: -19px;
-    left: -1px;
-    width: 50px;
-    height: 20px;
-    background-color: var(--color-3);
-    border-left: 1px solid var(--color-5);
-    border-bottom: 1px solid var(--color-5);
-    border-bottom-left-radius: 50px 20px;
-
-}
-.data-mainpage>div:nth-child(2)>div:nth-child(1) {
-    width: 50px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
     position: absolute;
     background-color: var(--color-0);
-    top: -19px;
-    left: -1px;
+    top: calc(100% - 279px);
+    left: -29px;
+    content: "";
+    border-right: var(--border-grey);
 }
-.data-mainpage>div:nth-child(2)>div:nth-last-child(1) {
+.data-mainpage>div:nth-child(2)>div:nth-child(1) {
+    width: 61px;
+    height: 250px;
     position: absolute;
-    left: 0;
-    bottom: 10px;
-    display: grid;
-}
-.data-mainpage>div:nth-child(2)>div:nth-last-child(1)>button {
-    margin: 0 0 10px 20px;
-    border: 1px solid var(--color-5);
-    border-radius: 20px;
-    background-color: var(--color-3);
-    padding: 5px 0;
-    width: 150px;
-    gap: 5px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition-duration: 0.2s;
-}
-.data-mainpage>div:nth-child(2)>div:nth-last-child(1)>button:hover {
-    background-color: var(--color-5);
-    color: var(--color-0);
-    transition-duration: 0.2s;
-}
-#display-service-detail {
-    height: calc(100% - 40px);
-    width: calc(100% - 200px);
-    float: right;
-    margin: 20px 0;
-    border: 1px solid var(--color-4);
-    border-bottom-left-radius: 20px;
-    border-top-left-radius: 20px;
-    padding: 10px 20px;
-}
-#display-service-detail>img {
-    width: 60%;
-    margin: auto 20%;
-}
-.content-item {
-    border-bottom: var(--color-4) dashed 1px;
-    margin-bottom: 15px;
-    padding-bottom: 15px;
-}
-.content-item>p {
-    margin: 0;
-}
-.data-mainpage>div:nth-child(3) {
-    grid-area: table3;
-    height: calc(100vh - var(--header-height) - 330px - 2 * 20px - 30px);
-    width: calc(100% - 20px);
+    background-color: var(--color-0);
+    left: -60px;
+    bottom: 0;
+    border-top-left-radius: 30px;
+    border-left: var(--border-normal);
+    border-right: var(--border-grey);
 }
 
+.data-mainpage>div:nth-child(2)>div:nth-child(1):after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -1px;
+    height: 30px;
+    width: calc(100% - 28px);
+    border-top: var(--border-normal);
+    border-left: var(--border-normal);
+    border-top-left-radius: 30px;
+}
+.data-mainpage>div:nth-child(2)>div:nth-child(1):before {
+    content: "";
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border-bottom-right-radius: 30px;
+    top: -29px;
+    right: -1px;
+    z-index: 1;
+    background-color: var(--color-3);
+    border-right: var(--border-normal);
+    border-bottom: var(--border-normal);
+}
+.table-title {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+}
+.search-tool {
+    display: grid;
+    gap: 20px;
+    grid-template-columns: 350px 1fr;
+}

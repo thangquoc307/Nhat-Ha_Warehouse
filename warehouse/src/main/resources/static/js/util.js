@@ -7,49 +7,16 @@ let coverDate = (number) => {
 
     return `${dateTime < 10 ? "0" + dateTime : dateTime}/${monthTime < 10 ? "0" + monthTime : monthTime}/${yearTime}`
 }
-
-let coverPrize = (number) => {
-    let numberStr = "" + number;
-    let result = "";
-    let count = 0;
-    for (let i = numberStr.length - 1; i >= 0; i--) {
-        if (count % 3 == 0 && count != 0) {
-            result = "," + result;
-        }
-        count++;
-        result = numberStr[i] + result;
-    }
-    return result;
-}
-let checkLazyload = (id) => {
-    const safeDistance = 50;
-
-    let container = document.getElementById(id);
-    let scrollTop = container.scrollTop;
-    let scrollHeight = container.scrollHeight;
-    let clientHeight = container.clientHeight;
-
-    return scrollTop + clientHeight >= scrollHeight - safeDistance;
+let getMonth = (number) => {
+    let month = new Date(number).getMonth() + 1;
+    return `T${month < 10 ? "0" : ""}${month}`
 }
 let debouncing = (func) => {
     debouncingArr.forEach(value => clearTimeout(value));
     debouncingArr.length = 0;
-    debouncingArr.push(setTimeout(func, 500));
+    debouncingArr.push(setTimeout(func, 200));
 }
-let hourSymbol = ["🕐","🕑","🕒","🕓","🕔","🕕","🕖","🕗","🕘","🕙","🕚","🕛"];
-let addHourSymbol = (time) => {
-    let symbol = hourSymbol[(+time.split(":")[0] - 1) % 12];
-    return symbol + " " + time;
-}
-let coverTimeDuration = (minute) => {
-    minute /= 60;
-    let minus = minute % 60;
-    let hour = Math.floor(minute / 60);
-    return `⏳ ${hour} hours : ${minus} minutes`;
-}
-let roundToThreeDecimalPlaces = (num) => {
-    return num.toFixed(2);
-}
+
 let showToast = (mess) => {
     $(function () {
         $("body").append(`<div id="lqt-toast">${mess}</div>`);
@@ -59,4 +26,9 @@ let showToast = (mess) => {
             });
         }, 3000);
     });
+}
+let countInArray = (array, item) => {
+    let count = 0;
+    array.forEach(value => {if (item == value) count++;})
+    return count;
 }
