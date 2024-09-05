@@ -2,6 +2,7 @@ let itemOfPage = 12;
 let pagePageable = 0;
 let urlApi = "http://localhost:8080/api/1.0/";
 let stockChoosedId = 0;
+let stockName = "";
 
 let pageableLoad = (page) => {
     $(function () {
@@ -65,7 +66,7 @@ let pageableLoad = (page) => {
                                     + "<div id='start-button-" + cur.id 
                                     + "' class='material-symbols-outlined " 
                                     + (cur.id == stockChoosedId ? "active-icon'" : "'") 
-                                    + "onclick='showDetail(" + cur.id + ")'>start</div>"
+                                    + "onclick='showDetail(" + cur.id + ", \"" + cur.so + "\")'>start</div>"
                                     + cur.so
                                     + "</div></td>" : ""}
                                 ${isNewStock ? "<td class='table-partner text-ellipsis' title='" + cur.partner 
@@ -131,19 +132,24 @@ let renderSerial = (arrayItem) => {
         return prev + `<div>
                             <div>${index + 1} - ${cur.serial}</div>
                             <span class="material-symbols-outlined">edit</span>
-                            <span class="material-symbols-outlined">delete</span>
+                            <span class="material-symbols-outlined"
+                                onclick="showDeleteModal(
+                                    '${cur.id}', '${cur.serial}', '${mode.SERIAL}')"
+                                    >delete</span>
                        </div>`
     }, `<div class="serial-list-detail">`);
     return data + "</div>";
 }
-let showDetail = (stockId) => {
+let showDetail = (stockId, name) => {
     $(function () {
         $("#start-button-" + stockChoosedId).removeClass("active-icon");
         $("#start-button-" + stockId).addClass("active-icon");
         if (stockId) {
             stockChoosedId = stockId;
+            stockName = name;
         } else {
             stockId = stockChoosedId;
+            name = stockName;
         }
         $.ajax({
             type: "GET",
@@ -156,7 +162,9 @@ let showDetail = (stockId) => {
                             return prev + `<div class="item-list-detail mb-3">
                                 <h5>${cur.partNumber}</h5>
                                 <div class="line-detail-button d-flex flex-row-reverse gap-1">
-                                    <span class="material-symbols-outlined">delete</span>
+                                    <span class="material-symbols-outlined"
+                                        onclick="showDeleteModal('${cur.id}', '${cur.partNumber}',
+                                         '${mode.ITEM}')">delete</span>
                                     <span class="material-symbols-outlined">edit</span>
                                     <span class="material-symbols-outlined">inventory_2</span>
                                 </div>
@@ -174,10 +182,16 @@ let showDetail = (stockId) => {
         })
     })
 }
+let resetDetail = () => {
+    $(function () {
+        $("#line-detail").html(`<img src="/alert_image/204.svg">`);
+        stockChoosedId = 0;
+        stockName = "";
+    })
+}
 let searchingData = () => {
     debouncing(() => {
         pageableLoad(0);
     })
 }
 pageableLoad(0);
-// showDetail(1);

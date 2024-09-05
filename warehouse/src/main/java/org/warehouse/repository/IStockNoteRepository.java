@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface IStockNoteRepository extends JpaRepository<StockNote, Integer> {
     @Query(nativeQuery = true, value = "select n.id, n.note, n.partner, n.release_date, " +
-            "n.so, i.description, i.part_number, s.name, ifnull(i.count, count(*)) as count " +
+            "n.so, i.description, i.part_number, s.name, ifnull(i.count, count(sr.item_id)) as count " +
             "from stock_notes n " +
             "join items i on n.id = i.stock_node_id " +
             "left join salers s on n.sale_id = s.id " +
@@ -28,7 +28,8 @@ public interface IStockNoteRepository extends JpaRepository<StockNote, Integer> 
             "and (isnull(:startDate) or n.release_date >= :startDate) " +
             "and (isnull(:endDate) or n.release_date <= :endDate) " +
             "and n.warehouse_id = :warehouseId " +
-            "and (n.is_delete = 0 and i.is_delete = 0) " +
+            "and (n.is_delete = 0 and i.is_delete = 0 " +
+            "and (isnull(sr.is_delete) or sr.is_delete = 0)) " +
             "group by i.id, n.release_date, n.so " +
             "order by n.release_date desc, n.so;",
             countQuery = "select count(*) from (" +
@@ -46,7 +47,8 @@ public interface IStockNoteRepository extends JpaRepository<StockNote, Integer> 
                     "and (isnull(:startDate) or n.release_date >= :startDate) " +
                     "and (isnull(:endDate) or n.release_date <= :endDate) " +
                     "and n.warehouse_id = :warehouseId " +
-                    "and (n.is_delete = 0 and i.is_delete = 0) " +
+                    "and (n.is_delete = 0 and i.is_delete = 0 " +
+                    "and (isnull(sr.is_delete) or sr.is_delete = 0)) " +
                     "group by i.id, n.release_date, n.so) as TB")
     Page<IItemShowDto> getItemDto(
             @Param("searchKey") String searchKey,
@@ -57,7 +59,10 @@ public interface IStockNoteRepository extends JpaRepository<StockNote, Integer> 
 
     @Query(value = "select new org.warehouse.dto.ItemDetailDto(" +
             "i.id, i.partNumber, i.description, i.count) " +
-            "from Item i where i.stockNote.isDelete = false and i.stockNote.id = :stockId")
+            "from Item i " +
+            "where i.stockNote.isDelete = false " +
+            "and i.isDelete = false " +
+            "and i.stockNote.id = :stockId")
     List<ItemDetailDto> getAllItemByStock(@Param("stockId") Integer stockId);
 
 }

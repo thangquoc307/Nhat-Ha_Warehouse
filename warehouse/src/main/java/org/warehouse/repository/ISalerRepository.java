@@ -8,6 +8,9 @@ import org.warehouse.model.Saler;
 import java.util.List;
 
 public interface ISalerRepository extends JpaRepository<Saler, Integer> {
-    @Query(nativeQuery = true, value = "select s.id, s.name from salers s where s.is_delete = 0")
+    @Query(nativeQuery = true,
+            value = "select s.id, s.name from salers s " +
+                    "where s.is_delete = 0 " +
+                    "order by id desc ")
     List<ISalerDto> getAllSaler();
 }

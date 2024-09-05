@@ -1,0 +1,30 @@
+#popup>.content {
+    position: fixed;
+    top: 50px;
+    width: var(--popup-width);
+    left: calc(50% - var(--popup-width) / 2);
+    padding: 20px;
+    border-radius: 20px;
+    background-color: var(--color-0);
+    border: var(--border-normal);
+    z-index: 3;
+}
+#popup>.filter {
+    background-color: rgba(0,0,0,0.8);
+    content: "";
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    left: 0;
+    animation-duration: 0.5s;
+}
+.button-close {
+    padding: 5px 15px;
+    background-color: var(--color-1);
+    color: var(--color-0);
+    border-radius: 50px;
+    cursor: pointer;
+    border: var(--border-normal);
+}

@@ -8,10 +8,13 @@
     <link rel="stylesheet" href="/css/tablecustom.css">
     <link rel="stylesheet" href="/css/pageable.css">
     <link rel="stylesheet" href="/css/displayDetail.css">
+    <link rel="stylesheet" href="/css/popup.css">
+    <link rel="stylesheet" href="/css/modalStyle.css">
     <link rel="stylesheet" href="/bootstrap/bootstrap.css">
 
     <script src="/jquery-3.7.1.min.js"></script>
     <script src="/bootstrap/bootstrap.bundle.js"></script>
+    <script src="/js/modalData.js"></script>
     <script src="/js/util.js"></script>
     <script src="/js/mainpage.js"></script>
     <script src="/js/popupCrud.js"></script>
@@ -69,9 +72,13 @@
             </table>
         </div>
         <div class="option-control">
-            <div><span class="material-symbols-outlined">warehouse</span> - Warehouse Manage</div>
+            <div onclick="showWareHouseManager()">
+                <span class="material-symbols-outlined">warehouse
+                </span> - Warehouse Manage</div>
             <div><span class="material-symbols-outlined">group</span> - Saler Manage</div>
-            <div><span class="material-symbols-outlined">compare</span> - Compare</div>
+            <div onclick="gotoLink('/publish/compare')">
+                <span class="material-symbols-outlined">compare
+                </span> - Compare</div>
         </div>
     </div>
     <div class="color0 display-detail">
@@ -79,7 +86,8 @@
             <div class="material-symbols-outlined">refresh</div>
             <div class="material-symbols-outlined">add</div>
             <div class="material-symbols-outlined">edit</div>
-            <div class="material-symbols-outlined">delete</div>
+            <div onclick="showDeleteModal(0, '', mode.STOCK)"
+                 class="material-symbols-outlined">delete</div>
         </div>
         <h5 class="targetText pe-2">CHI TIẾT PHIẾU XUẤT </h5>
         <div id="line-detail" class="color3 scroll-custom">
@@ -87,7 +95,5 @@
         </div>
     </div>
 </div>
-<div id="popup"></div>
-
 </body>
 </html>

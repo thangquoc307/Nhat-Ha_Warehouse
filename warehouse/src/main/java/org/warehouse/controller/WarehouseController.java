@@ -19,8 +19,13 @@ public class WarehouseController {
     public String mainmenu(Model model) {
         List<IWarehouseDto> warehouseDtos = stockNoteService.getAllWarehouse();
         model.addAttribute("warehouses", warehouseDtos);
-
         return "mainpage";
+    }
+    @GetMapping("compare")
+    public String compare(Model model) {
+        List<IWarehouseDto> warehouseDtos = stockNoteService.getAllWarehouse();
+        model.addAttribute("warehouses", warehouseDtos);
+        return "compare";
     }
 
 }

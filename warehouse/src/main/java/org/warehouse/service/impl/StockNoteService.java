@@ -16,6 +16,7 @@ import org.warehouse.service.IStockNoteService;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StockNoteService implements IStockNoteService {
@@ -58,6 +59,9 @@ public class StockNoteService implements IStockNoteService {
                 itemDetailDto.setCount(serialDtoList.size());
             }
         });
-        return itemDetailDtos;
+        return itemDetailDtos
+                .stream().filter(
+                        itemDetailDto -> itemDetailDto.getCount() != 0)
+                .collect(Collectors.toList());
     }
 }

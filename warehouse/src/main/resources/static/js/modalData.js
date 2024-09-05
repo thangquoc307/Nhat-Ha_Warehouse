@@ -1,7 +1,19 @@
 let idDelModal = "lqt-delete-modal";
+let mode = {
+    WAREHOUSE: "warehouse",
+    STOCK: "stock",
+    ITEM: "item",
+    SERIAL: "serial",
+    SALER: "saler"
+}
 
-let showDeleteModal = (id, name) => {
+let showDeleteModal = (id, name, modeStt) => {
+    if (modeStt == mode.STOCK) {
+        name = stockName;
+        id = stockChoosedId;
+    }
     $(function () {
+        closePopup();
         closeModal();
         $("body").append(`<div id="${idDelModal}" 
             class="boxshadow-outset borderradius color0 modal-confirm">
@@ -9,23 +21,8 @@ let showDeleteModal = (id, name) => {
                 <button onclick="closeModal()">
                     <span class="material-symbols-outlined">close</span> Cancel
                 </button>
-                <button onclick="confirmDel('${id}', '${name}')">
+                <button onclick="confirmDel('${id}', '${modeStt}')">
                     <span class="material-symbols-outlined">delete</span> Delete
-                </button>
-            </div>`);
-    });
-}
-let showLogoutModal = () => {
-    $(function () {
-        closeModal();
-        $("body").append(`<div id="${idDelModal}" 
-            class="boxshadow-outset borderradius color0 modal-confirm">
-                <p>Are you sure about <span>LOGOUT</span> ?</p>
-                <button onclick="closeModal()">
-                    <span class="material-symbols-outlined">close</span> Cancel
-                </button>
-                <button onclick="gotoLink('/logout')">
-                    <span class="material-symbols-outlined">logout</span> Logout
                 </button>
             </div>`);
     });
@@ -38,16 +35,33 @@ let closeModal = () => {
 let gotoLink = (link) => {
     window.location.href = link;
 }
-let confirmDel = (id, name) => {
-    deleteContent(id, name);
+let confirmDel = (id, mode) => {
+    deleteContent(id, mode);
     closeModal();
 }
-let deleteContent = (id, name) => {
+let deleteContent = (id, sttMode) => {
+    console.log(`${urlApi}delete/${sttMode}/${id}`)
     $.ajax({
         type: "DELETE",
-        url: `${urlApi + arrayLink[currentMode]}/delete/${id}`,
+        url: `${urlApi}delete/${sttMode}/${id}`,
         success: (result, status, xhr) => {
-            gotoLink(`http://localhost:8080/manage/device?mess=Delete ${name} success`);
+            switch (sttMode) {
+                case mode.WAREHOUSE:
+                    gotoLink("/publish/home");
+                    break;
+                case mode.STOCK:
+                    resetDetail();
+                    pageableLoad(pagePageable);
+                    break;
+                case mode.ITEM:
+                case mode.SERIAL:
+                    pageableLoad(pagePageable);
+                    showDetail(null, "");
+                    break;
+                case mode.SALER:
+                    break;
+            }
+
         }
     })
 }

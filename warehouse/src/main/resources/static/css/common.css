@@ -10,6 +10,7 @@
     --border-normal: solid 1px var(--color-5);
     --border-grey: dashed 1px var(--color-3);
     --border-red: solid 1px var(--color-1);
+    --popup-width: 500px;
 }
 * {
     box-sizing: border-box;
@@ -139,7 +140,7 @@ body {
     height: 20px;
     position: absolute;
     left: 0;
-    top: var(--header-height);
+    top: calc(var(--header-height) - 1px);
     border-top-left-radius: 100%;
     border-top: 1px solid black;
     border-left: 1px solid black;

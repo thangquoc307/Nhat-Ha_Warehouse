@@ -8,6 +8,9 @@ import org.warehouse.model.Warehouse;
 import java.util.List;
 
 public interface IWarehouseRepository extends JpaRepository<Warehouse, Integer> {
-    @Query(nativeQuery = true, value = "select id, name from warehouses where is_delete = 0")
+    @Query(nativeQuery = true,
+            value = "select id, name from warehouses " +
+                    "where is_delete = 0 " +
+                    "order by id desc ")
     List<IWarehouseDto> getAllWarehouse();
 }
