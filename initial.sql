@@ -248,4 +248,7 @@ and (isnull(null) or sn.release_date >= '2024-07-30')
 and (isnull(null) or sn.release_date <= '2024-08-06')
 and i.is_delete = 0 and sn.is_delete = 0
 and (isnull(s.is_delete) or s.is_delete = 0)
-# group by i.stock_node_id, i.count
+group by i.stock_node_id, i.count;
+
+select * from warehouses;
+select * from items_serials;

@@ -23,7 +23,6 @@ public class Item implements Serializable {
     private String partNumber;
     @Column(length = 1000)
     private String description;
-//    has seri => count != null
     private Integer count;
     @OneToMany(mappedBy = "item")
     @JsonBackReference
@@ -33,4 +32,8 @@ public class Item implements Serializable {
     private StockNote stockNote;
     @Column(columnDefinition = "bit(1) default 0")
     private Boolean isDelete;
+
+    public Item(Integer id) {
+        this.id = id;
+    }
 }

@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/css/displayDetail.css">
     <link rel="stylesheet" href="/css/popup.css">
     <link rel="stylesheet" href="/css/modalStyle.css">
+    <link rel="stylesheet" href="/css/modifyData.css">
     <link rel="stylesheet" href="/bootstrap/bootstrap.css">
 
     <script src="/jquery-3.7.1.min.js"></script>
@@ -18,6 +19,7 @@
     <script src="/js/util.js"></script>
     <script src="/js/mainpage.js"></script>
     <script src="/js/popupCrud.js"></script>
+    <script src="/js/modifyData.js"></script>
 </head>
 <body class="color3">
 <div th:replace="template::header"></div>
@@ -72,10 +74,12 @@
             </table>
         </div>
         <div class="option-control">
-            <div onclick="showWareHouseManager()">
+            <div onclick="showWareHouseManager('warehouse')">
                 <span class="material-symbols-outlined">warehouse
                 </span> - Warehouse Manage</div>
-            <div><span class="material-symbols-outlined">group</span> - Saler Manage</div>
+            <div onclick="showWareHouseManager('saler')">
+                <span class="material-symbols-outlined">group
+                </span> - Saler Manage</div>
             <div onclick="gotoLink('/publish/compare')">
                 <span class="material-symbols-outlined">compare
                 </span> - Compare</div>

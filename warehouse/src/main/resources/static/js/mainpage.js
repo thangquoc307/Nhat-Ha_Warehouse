@@ -3,7 +3,19 @@ let pagePageable = 0;
 let urlApi = "http://localhost:8080/api/1.0/";
 let stockChoosedId = 0;
 let stockName = "";
+let listSerial = [];
+let idSerialEdited = 0;
+class SerialItem {
+    id;
+    name;
+    index;
 
+    constructor(id, name, index) {
+        this.id = id;
+        this.name = name;
+        this.index = index;
+    }
+}
 let pageableLoad = (page) => {
     $(function () {
         let warehouseId = $("#warehouse-select").val();
@@ -129,9 +141,11 @@ let pageableLoad = (page) => {
 }
 let renderSerial = (arrayItem) => {
     let data = arrayItem.reduce((prev, cur, index) => {
-        return prev + `<div>
+        listSerial.push(new SerialItem(cur.id, cur.serial, index))
+        return prev + `<div id="edit-serial-${cur.id}">
                             <div>${index + 1} - ${cur.serial}</div>
-                            <span class="material-symbols-outlined">edit</span>
+                            <span class="material-symbols-outlined"
+                                onclick="showEditSerial(${cur.id})">edit</span>
                             <span class="material-symbols-outlined"
                                 onclick="showDeleteModal(
                                     '${cur.id}', '${cur.serial}', '${mode.SERIAL}')"
@@ -143,7 +157,6 @@ let renderSerial = (arrayItem) => {
 let showDetail = (stockId, name) => {
     $(function () {
         $("#start-button-" + stockChoosedId).removeClass("active-icon");
-        $("#start-button-" + stockId).addClass("active-icon");
         if (stockId) {
             stockChoosedId = stockId;
             stockName = name;
@@ -151,11 +164,14 @@ let showDetail = (stockId, name) => {
             stockId = stockChoosedId;
             name = stockName;
         }
+        $("#start-button-" + stockId).addClass("active-icon");
         $.ajax({
             type: "GET",
             url: `${urlApi}warehouse/item-detail?stockId=${stockId}`,
             success: (result, status, xhr) => {
                 if (xhr.status === 200) {
+                    listSerial = [];
+                    idSerialEdited = 0;
                     let arrayData = result;
                     $("#line-detail").html(
                         arrayData.reduce((prev, cur) => {
@@ -166,9 +182,16 @@ let showDetail = (stockId, name) => {
                                         onclick="showDeleteModal('${cur.id}', '${cur.partNumber}',
                                          '${mode.ITEM}')">delete</span>
                                     <span class="material-symbols-outlined">edit</span>
-                                    <span class="material-symbols-outlined">inventory_2</span>
+                                    ${cur.hasSerial ?
+                                    `<span class="material-symbols-outlined"
+                                        onclick="showTableCreateSerial(${cur.id}, '${cur.partNumber}')">
+                                        inventory_2</span>`
+                                    : ``}
                                 </div>
-                                <p class="m-1">👉 <span class="fw-bold">Số lượng: </span>${cur.count} 
+                                <p class="m-1 d-flex gap-2 align-items-center">👉 <span class="fw-bold">Số lượng: </span>${cur.count} 
+                                    ${cur.hasSerial ? `` : `<span class="button-edit-count material-symbols-outlined"
+                                    onclick="showEditCount(${cur.id}, ${cur.count}, '${cur.partNumber}')"
+                                    >edit_square</span>`}</p>
                                 <p class="m-1">👉 <span class="fw-bold">Thiết bị: </span>${cur.description}</p>
                                 ${(cur.itemSerials.length > 0 ? renderSerial(cur.itemSerials) : "")}
                             </div>`;
@@ -192,6 +215,100 @@ let resetDetail = () => {
 let searchingData = () => {
     debouncing(() => {
         pageableLoad(0);
+    })
+}
+let showEditSerial = async (id) => {
+    await closeEditSerial(idSerialEdited);
+    idSerialEdited = id;
+    $(function () {
+        let data = listSerial.find(value => value.id == id);
+        $(`#edit-serial-${id}`).html(`<input class="form-control" 
+            type="text" value="${data.name}">
+            <span class="material-symbols-outlined" 
+                onclick="closeEditSerial(${data.id})">close</span>
+            <span class="material-symbols-outlined"
+                onclick="sendEditSerial(${data.id})">check</span>`)
+    })
+}
+let closeEditSerial = (id) => {
+    $(function () {
+        let data = listSerial.find(value => value.id == id);
+        $(`#edit-serial-${id}`).html(`<div>${data.index + 1} - ${data.name}</div>
+            <span class="material-symbols-outlined"
+                onclick="showEditSerial(${data.id})">edit</span>
+            <span class="material-symbols-outlined"
+                onclick="showDeleteModal(
+                    '${data.id}', '${data.name}', '${mode.SERIAL}')"
+                    >delete</span>`)
+    })
+}
+let sendEditSerial = (id) => {
+    $(function () {
+        let value = $(`#edit-serial-${id} input`).val();
+        let data = new DataEdit(id, value);
+        $.ajax({
+            type: "PUT",
+            url: `${urlApi}data/serial`,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: () => {
+                showDetail(stockChoosedId, stockName);
+            }
+        })
+    })
+}
+let showEditCount = (id, count, name) => {
+    $(function () {
+        closeEditCount();
+        $("body").append(`<div id="edit-count">
+            <div></div>
+            <div class="color0 borderradius boxshadow-outset p-3">
+                <h4>Edit ${name} Quantity</h4>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text material-symbols-outlined">
+                    account_balance_wallet</span>
+                    <input id="edit-count-val" type="number" 
+                    class="form-control" min="0" value="${count}">
+                    <input id="edit-count-id" hidden="hidden" value="${id}">
+                </div>
+                <p id="edit-count-alert" hidden="hidden" 
+                    class="textAlert text-end">Chỉ nhập số lớn hơn 0</p>
+                <div class="d-flex flex-row-reverse gap-2 mt-3">
+                    <button onclick="sendEditCount()">
+                        <span class="material-symbols-outlined">send</span> Send
+                    </button>
+                    <button onclick="closeEditCount()">
+                        <span class="material-symbols-outlined">close</span> Cancel
+                    </button>
+                </div>
+            </div>
+        </div>`)
+    })
+}
+let closeEditCount = () => {
+    $(`#edit-count`).fadeOut(500, function() {
+        $(this).remove();
+    });
+}
+let sendEditCount = () => {
+    $(function () {
+        let id = $("#edit-count-id").val();
+        let value = +$("#edit-count-val").val();
+        if (value < 0) {
+            $("#edit-count-alert").removeAttr("hidden");
+        } else {
+            $.ajax({
+                type: "POST",
+                url: `${urlApi}data/count`,
+                contentType: "application/json",
+                data: JSON.stringify({id: id, count: value}),
+                success: () => {
+                    closeEditCount();
+                    pageableLoad(pagePageable);
+                    showDetail(null, "");
+                }
+            })
+        }
     })
 }
 pageableLoad(0);

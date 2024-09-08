@@ -1,6 +1,15 @@
 :root {
     --modal-width: 500px;
 }
+#lqt-delete-modal>div:nth-child(1){
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 1;
+}
 .modal-confirm {
     position: fixed;
     top: calc(20vh);
@@ -14,6 +23,7 @@
     row-gap: 30px;
     grid-template-areas: "content content" "cancel confirm";
     animation: ease-in-out topSlide 0.5s;
+    z-index: 2;
 }
 .modal-confirm>p {
     grid-area: content;

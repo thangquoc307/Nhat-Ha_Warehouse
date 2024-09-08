@@ -27,4 +27,10 @@
     border-radius: 50px;
     cursor: pointer;
     border: var(--border-normal);
+    transition-duration: 0.2s;
+}
+.button-close:hover {
+    transition-duration: 0.2s;
+    scale: 1.1;
+    background-color: var(--color-5);
 }

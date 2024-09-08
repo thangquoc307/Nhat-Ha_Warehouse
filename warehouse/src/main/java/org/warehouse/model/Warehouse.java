@@ -26,4 +26,15 @@ public class Warehouse implements Serializable {
     private List<StockNote> stockNotes;
     @Column(columnDefinition = "bit(1) default 0")
     private Boolean isDelete;
+
+    public Warehouse(String name) {
+        this.name = name;
+        this.isDelete = false;
+    }
+
+    public Warehouse(Integer id, String name, Boolean isDelete) {
+        this.id = id;
+        this.name = name;
+        this.isDelete = isDelete;
+    }
 }

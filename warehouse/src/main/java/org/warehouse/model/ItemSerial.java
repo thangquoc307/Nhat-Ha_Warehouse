@@ -23,4 +23,16 @@ public class ItemSerial implements Serializable {
     private Item item;
     @Column(columnDefinition = "bit(1) default 0")
     private Boolean isDelete;
+
+    public ItemSerial(String serial, Item item) {
+        this.serial = serial;
+        this.item = item;
+        this.isDelete = false;
+    }
+
+    public ItemSerial(Integer id, String serial, Boolean isDelete) {
+        this.id = id;
+        this.serial = serial;
+        this.isDelete = isDelete;
+    }
 }

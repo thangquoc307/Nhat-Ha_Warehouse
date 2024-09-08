@@ -55,6 +55,7 @@ public class StockNoteService implements IStockNoteService {
             List<IItemSerialDto> serialDtoList =
                     iItemSerialRepository.getItemSerial(itemDetailDto.getId());
             itemDetailDto.setItemSerials(serialDtoList);
+            itemDetailDto.setHasSerial(itemDetailDto.getCount() == null);
             if (itemDetailDto.getCount() == null) {
                 itemDetailDto.setCount(serialDtoList.size());
             }

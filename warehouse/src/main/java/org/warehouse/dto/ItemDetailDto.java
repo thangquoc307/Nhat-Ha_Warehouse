@@ -17,6 +17,7 @@ public class ItemDetailDto {
     private String description;
     private Integer count;
     private List<IItemSerialDto> itemSerials;
+    private Boolean hasSerial;
 
     public ItemDetailDto(Integer id, String partNumber, String description, Integer count) {
         this.id = id;

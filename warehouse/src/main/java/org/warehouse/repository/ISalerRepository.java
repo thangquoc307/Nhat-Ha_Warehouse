@@ -2,6 +2,7 @@ package org.warehouse.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.warehouse.dto.ISalerDto;
 import org.warehouse.model.Saler;
 
@@ -13,4 +14,7 @@ public interface ISalerRepository extends JpaRepository<Saler, Integer> {
                     "where s.is_delete = 0 " +
                     "order by id desc ")
     List<ISalerDto> getAllSaler();
+    @Query(value = "select new Saler (s.id, s.name, s.isDelete) " +
+            "from Saler s where s.id = :id and s.isDelete = false ")
+    Saler findSaler(@Param("id") Integer id);
 }

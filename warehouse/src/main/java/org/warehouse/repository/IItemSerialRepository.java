@@ -1,8 +1,10 @@
 package org.warehouse.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.transaction.annotation.Transactional;
 import org.warehouse.dto.IDetailItemDto;
 import org.warehouse.dto.IItemSerialDto;
 import org.warehouse.model.ItemSerial;
@@ -34,4 +36,11 @@ public interface IItemSerialRepository extends JpaRepository<ItemSerial, Integer
             @Param("warehouseId") Integer warehouseId,
             @Param("startdate")LocalDate startDate,
             @Param("enddate")LocalDate endDate);
+    @Query(value = "select new ItemSerial (i.id, i.serial, i.isDelete) " +
+            "from ItemSerial i where i.id = :id and i.isDelete = false ")
+    ItemSerial findSerial(@Param("id") Integer id);
+    @Modifying
+    @Transactional
+    @Query(value = "update ItemSerial i set i.serial = :serial where i.id = :id")
+    void updateSerial(@Param("serial") String serial, @Param("id") Integer id);
 }

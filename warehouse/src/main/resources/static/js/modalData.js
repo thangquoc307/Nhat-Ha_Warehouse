@@ -15,15 +15,18 @@ let showDeleteModal = (id, name, modeStt) => {
     $(function () {
         closePopup();
         closeModal();
-        $("body").append(`<div id="${idDelModal}" 
-            class="boxshadow-outset borderradius color0 modal-confirm">
-                <p>Are you sure about <span>Delete ${name}</span> ?</p>
-                <button onclick="closeModal()">
-                    <span class="material-symbols-outlined">close</span> Cancel
-                </button>
-                <button onclick="confirmDel('${id}', '${modeStt}')">
-                    <span class="material-symbols-outlined">delete</span> Delete
-                </button>
+        $("body").append(`<div id="${idDelModal}" >
+                <div></div>
+                <div class="boxshadow-outset borderradius color0 modal-confirm">
+                    <p>Are you sure about <span>Delete ${name}</span> ?</p>
+                    <button onclick="closeModal()">
+                        <span class="material-symbols-outlined">close</span> Cancel
+                    </button>
+                    <button onclick="confirmDel('${id}', '${modeStt}')">
+                        <span class="material-symbols-outlined">delete</span> Delete
+                    </button>
+                </div>
+               
             </div>`);
     });
 }
