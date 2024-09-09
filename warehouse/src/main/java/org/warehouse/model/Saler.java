@@ -37,5 +37,9 @@ public class Saler implements Serializable {
         this.name = name;
         this.isDelete = isDelete;
     }
+
+    public Saler(Integer id) {
+        this.id = id;
+    }
 }
 

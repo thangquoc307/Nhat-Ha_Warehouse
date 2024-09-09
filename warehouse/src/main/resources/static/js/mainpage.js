@@ -84,13 +84,20 @@ let pageableLoad = (page) => {
                                 ${isNewStock ? "<td class='table-partner text-ellipsis' title='" + cur.partner 
                                     + "' rowspan='" + countId + "'>" + cur.partner + "</td>" : ""}
                                 <td class="table-partnumber text-ellipsis"
-                                 title="${cur.partNumber}">${cur.partNumber}</td>
+                                 title="${cur.partNumber}">${cur.partNumber ?? "Chưa có thông tin"}</td>
                                 <td class="table-description text-ellipsis"
-                                 title="${cur.description}">${cur.description}</td>
+                                 title="${cur.description}">${cur.description ?? "Chưa có thông tin"}</td>
                                 <td class="table-count text-center">${cur.count}</td>
                                 
                                 ${isNewStock ? "<td class='table-saler text-ellipsis' title='" + (cur.name ?? "")
                                     + "' rowspan='" + countId + "'>" + (cur.name ?? "") + "</td>" : ""}
+                                ${isNewStock ? "<td class='table-file' "
+                                    + "rowspan='" + countId + "'><div class='d-flex flex-row gap-2 justify-content-center align-items-center'>"
+                                + `<span class="material-symbols-outlined" onclick='uploadPdf(${cur.id})'>upload_file</span>`
+                                + (cur.image == null 
+                                    ? `<span class="material-symbols-outlined disable-button">image</span>` 
+                                    : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id})">image</span>`
+                                ) + "</div></td>" : ""}
                                 ${isNewStock ? "<td class='table-note text-ellipsis' title='" + cur.note
                                     + "' rowspan='" + countId + "'>" + cur.note + "</td>" : ""}
                             </tr>`;
@@ -181,7 +188,8 @@ let showDetail = (stockId, name) => {
                                     <span class="material-symbols-outlined"
                                         onclick="showDeleteModal('${cur.id}', '${cur.partNumber}',
                                          '${mode.ITEM}')">delete</span>
-                                    <span class="material-symbols-outlined">edit</span>
+                                    <span class="material-symbols-outlined"
+                                        onclick="gotoModifyItem(${cur.id})">edit</span>
                                     ${cur.hasSerial ?
                                     `<span class="material-symbols-outlined"
                                         onclick="showTableCreateSerial(${cur.id}, '${cur.partNumber}')">
@@ -309,6 +317,63 @@ let sendEditCount = () => {
                 }
             })
         }
+    })
+}
+let gotoModifyStock = (isCreate) => {
+    $(function () {
+        let warehouseId = $("#warehouse-select").val();
+        if (stockChoosedId != 0 && !isCreate) {
+            gotoLink(`/publish/stock?id=${stockChoosedId}&warehouse-id=${warehouseId}`);
+        } else if (isCreate) {
+            gotoLink(`/publish/stock?warehouse-id=${warehouseId}`);
+        }
+    })
+}
+let gotoModifyItem = (editId) => {
+    $(function () {
+        if (editId != 0 && stockChoosedId != 0) {
+            gotoLink(`/publish/item?id=${editId}&stock-id=${stockChoosedId}`);
+        } else if (stockChoosedId != 0) {
+            gotoLink(`/publish/item?stock-id=${stockChoosedId}`);
+        }
+    })
+}
+let uploadPdf = async (id) => {
+    $("#upload-pdf").click();
+    $("#upload-pdf").on("change", async function () {
+        let fileInput = this.files[0];
+        console.log(fileInput);
+        if (fileInput) {
+            let formData = new FormData();
+            formData.append("file", fileInput);
+            try {
+                let response = await $.ajax({
+                    url: `${urlApi}warehouse/upload-pdf/${id}`,
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false
+                });
+                gotoLink("/publish/home");
+            } catch (error) {
+                console.error("Upload failed", error);
+            }
+        }
+    });
+}
+let showPdf = (id) => {
+    $(function () {
+        $.ajax({
+            url: `${urlApi}warehouse/pdf/${id}`,
+            type: 'GET',
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function (blob) {
+                let url = URL.createObjectURL(blob);
+                window.open(url, '_blank');
+            }
+        });
     })
 }
 pageableLoad(0);

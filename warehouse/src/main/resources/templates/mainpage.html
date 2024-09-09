@@ -28,7 +28,8 @@
         <div class="color0">
             <div id="content-table-pageable"></div>
             <div class="button-add-stock">
-                <div class="material-symbols-outlined">add</div>
+                <div class="material-symbols-outlined"
+                onclick="gotoModifyStock(true)">add</div>
             </div>
         </div>
         <div class="table-title">
@@ -67,6 +68,7 @@
                     <th>Thiết bị</th>
                     <th>SL</th>
                     <th>Saler</th>
+                    <th>File</th>
                     <th>Ghi chú</th>
                 </tr>
                 </thead>
@@ -87,9 +89,10 @@
     </div>
     <div class="color0 display-detail">
         <div class="control-bar">
-            <div class="material-symbols-outlined">refresh</div>
-            <div class="material-symbols-outlined">add</div>
-            <div class="material-symbols-outlined">edit</div>
+            <div class="material-symbols-outlined"
+                 onclick="gotoModifyItem(0)">add</div>
+            <div class="material-symbols-outlined"
+                 onclick="gotoModifyStock(false)">edit</div>
             <div onclick="showDeleteModal(0, '', mode.STOCK)"
                  class="material-symbols-outlined">delete</div>
         </div>
@@ -98,6 +101,7 @@
             <img src="/alert_image/204.svg">
         </div>
     </div>
+    <input type="file" id="upload-pdf" accept="application/pdf" hidden="hidden">
 </div>
 </body>
 </html>

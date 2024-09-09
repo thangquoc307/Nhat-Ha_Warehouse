@@ -2,13 +2,9 @@ package org.warehouse.restapi;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.*;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.warehouse.dto.IItemShowDto;
 import org.warehouse.dto.ISalerDto;
 import org.warehouse.dto.IWarehouseDto;
@@ -81,5 +77,30 @@ public class WarehouseRestController {
         } else {
             return new ResponseEntity<>(salerDtos, HttpStatus.OK);
         }
+    }
+    @PostMapping("/upload-pdf/{id}")
+    public ResponseEntity<?> uploadPdfFile(
+            @PathVariable Integer id,
+            @RequestParam("file") MultipartFile file) {
+        try {
+            if (!file.isEmpty()) {
+                byte[] fileBytes = file.getBytes();
+                stockNoteService.createPdf(fileBytes, id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    @GetMapping("pdf/{id}")
+    public ResponseEntity<?> getPdf(@PathVariable Integer id) {
+        byte[] image = stockNoteService.getImage(id);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDisposition(ContentDisposition.inline()
+                .filename("file.pdf").build());
+        return new ResponseEntity<>(image, headers, HttpStatus.OK);
     }
 }

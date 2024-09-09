@@ -2,7 +2,6 @@ let workbook;
 let worksheet;
 let endRow = 0;
 let arrayData = [];
-let urlApi = "http://localhost:8080/api/1.0/";
 
 class DataExcel {
     partNumber;
@@ -89,9 +88,11 @@ let setupDetail = (detailItemArray) => {
         return "<td></td>"
     } else {
         let data = detailItemArray.reduce((prev, cur) => {
-            return prev + `<tr><td>${coverDate(cur.releaseDate)} - SO: ${cur.so} - SL: ${cur.countData}</td></tr>`
+            return prev + `<tr><td><div class="d-flex gap-2 align-items-center">
+                ${coverDate(cur.releaseDate)} - SO: ${cur.so} - SL: ${cur.countData}
+                ${cur.image == null ? "" : "<span class='button-show-image material-symbols-outlined' onclick='showPdf(" 
+                + cur.stockNoteId + ")'>image</span>" }</div></td></tr>`
         }, "");
-        console.log(data.substring(4, data.length - 4));
         return data.substring(4, data.length - 5);
     }
 }

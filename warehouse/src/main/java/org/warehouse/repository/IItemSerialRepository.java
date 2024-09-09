@@ -18,7 +18,7 @@ public interface IItemSerialRepository extends JpaRepository<ItemSerial, Integer
             "join items i on i.id = s.item_id " +
             "where i.is_delete = 0 and s.is_delete = 0 and s.item_id = :itemId")
     List<IItemSerialDto> getItemSerial(@Param("itemId") Integer itemId);
-    @Query(nativeQuery = true, value = "select " +
+    @Query(nativeQuery = true, value = "select sn.id as stockNoteId, sn.image, " +
             "ifnull(i.count, count(s.id)) countData, " +
             "sn.so, sn.release_date " +
             "from items i " +

@@ -36,4 +36,13 @@ public class Item implements Serializable {
     public Item(Integer id) {
         this.id = id;
     }
+
+    public Item(Integer id, String partNumber, String description, Integer count, StockNote stockNote) {
+        this.id = id;
+        this.partNumber = partNumber;
+        this.description = description;
+        this.count = count;
+        this.stockNote = stockNote;
+        this.isDelete = false;
+    }
 }

@@ -12,4 +12,5 @@ public interface IItemShowDto {
     String getPartNumber();
     String getName();
     Integer getCount();
+    byte[] getImage();
 }

@@ -106,14 +106,14 @@
     height: 30px;
     position: absolute;
     background-color: var(--color-0);
-    top: calc(100% - 279px);
+    top: calc(100% - 229px);
     left: -29px;
     content: "";
     border-right: var(--border-grey);
 }
 .data-mainpage>div:nth-child(2)>div:nth-child(1) {
     width: 61px;
-    height: 250px;
+    height: 200px;
     position: absolute;
     background-color: var(--color-0);
     left: -60px;

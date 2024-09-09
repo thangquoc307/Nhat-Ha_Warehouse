@@ -7,49 +7,52 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.warehouse.dto.IItemShowDto;
 import org.warehouse.dto.ItemDetailDto;
+import org.warehouse.dto.StockCreateDto;
 import org.warehouse.model.StockNote;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public interface IStockNoteRepository extends JpaRepository<StockNote, Integer> {
-    @Query(nativeQuery = true, value = "select n.id, n.note, n.partner, n.release_date, " +
+    @Query(nativeQuery = true, value = "select n.id, n.note, n.partner, n.release_date, n.image, " +
             "n.so, i.description, i.part_number, s.name, ifnull(i.count, count(sr.item_id)) as count " +
             "from stock_notes n " +
-            "join items i on n.id = i.stock_node_id " +
+            "left join items i on n.id = i.stock_node_id " +
             "left join salers s on n.sale_id = s.id " +
             "left join items_serials sr on i.id = sr.item_id " +
-            "where (i.description like :searchKey " +
-            "or i.part_number like :searchKey " +
-            "or sr.serial like :searchKey " +
-            "or s.name like :searchKey " +
+            "where ((isnull(i.description) or i.description like :searchKey) " +
+            "or (isnull(i.part_number) or i.part_number like :searchKey) " +
+            "or (isnull(sr.serial) or sr.serial like :searchKey) " +
+            "or (isnull(s.name) or s.name like :searchKey) " +
             "or n.partner like :searchKey " +
             "or n.so like :searchKey) " +
             "and (isnull(:startDate) or n.release_date >= :startDate) " +
             "and (isnull(:endDate) or n.release_date <= :endDate) " +
             "and n.warehouse_id = :warehouseId " +
-            "and (n.is_delete = 0 and i.is_delete = 0 " +
+            "and (n.is_delete = 0 " +
+            "and (isnull(i.is_delete) or i.is_delete = 0) " +
             "and (isnull(sr.is_delete) or sr.is_delete = 0)) " +
-            "group by i.id, n.release_date, n.so " +
+            "group by i.id, n.release_date, n.so, n.id " +
             "order by n.release_date desc, n.so;",
             countQuery = "select count(*) from (" +
                     "select i.id " +
                     "from stock_notes n " +
-                    "join items i on n.id = i.stock_node_id " +
+                    "left join items i on n.id = i.stock_node_id " +
                     "left join salers s on n.sale_id = s.id " +
                     "left join items_serials sr on i.id = sr.item_id " +
-                    "where (i.description like :searchKey " +
-                    "or i.part_number like :searchKey " +
-                    "or sr.serial like :searchKey " +
-                    "or s.name like :searchKey " +
+                    "where ((isnull(i.description) or i.description like :searchKey) " +
+                    "or (isnull(i.part_number) or i.part_number like :searchKey) " +
+                    "or (isnull(sr.serial) or sr.serial like :searchKey) " +
+                    "or (isnull(s.name) or s.name like :searchKey) " +
                     "or n.partner like :searchKey " +
                     "or n.so like :searchKey) " +
                     "and (isnull(:startDate) or n.release_date >= :startDate) " +
                     "and (isnull(:endDate) or n.release_date <= :endDate) " +
                     "and n.warehouse_id = :warehouseId " +
-                    "and (n.is_delete = 0 and i.is_delete = 0 " +
+                    "and (n.is_delete = 0 " +
+                    "and (isnull(i.is_delete) or i.is_delete = 0) " +
                     "and (isnull(sr.is_delete) or sr.is_delete = 0)) " +
-                    "group by i.id, n.release_date, n.so) as TB")
+                    "group by i.id, n.release_date, n.so, n.id) as TB")
     Page<IItemShowDto> getItemDto(
             @Param("searchKey") String searchKey,
             @Param("startDate") LocalDate startDate,
@@ -64,5 +67,9 @@ public interface IStockNoteRepository extends JpaRepository<StockNote, Integer> 
             "and i.isDelete = false " +
             "and i.stockNote.id = :stockId")
     List<ItemDetailDto> getAllItemByStock(@Param("stockId") Integer stockId);
+    @Query(value = "select new org.warehouse.dto.StockCreateDto(" +
+            "s.id, s.releaseDate, s.so, s.partner, s.note, s.saler.id, s.warehouse.id) " +
+            "from StockNote s where s.id = :id and s.isDelete = false ")
+    StockCreateDto getStockNoteForEdit(@Param("id") Integer id);
 
 }

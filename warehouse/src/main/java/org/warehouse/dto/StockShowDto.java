@@ -20,7 +20,7 @@ public class StockShowDto {
     private LocalDate releaseDate;
     private String so;
     private String name;
-    private List<ItemStock> itemStocks;
+    private List<ItemStockDto> itemStocks;
 
     @Override
     public boolean equals(Object o) {

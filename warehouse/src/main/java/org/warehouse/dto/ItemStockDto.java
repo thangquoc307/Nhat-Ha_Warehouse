@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemStock {
+public class ItemStockDto {
     private Integer count;
     private String description;
     private String partNumber;

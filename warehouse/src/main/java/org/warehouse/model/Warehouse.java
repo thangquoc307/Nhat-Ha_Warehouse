@@ -37,4 +37,8 @@ public class Warehouse implements Serializable {
         this.name = name;
         this.isDelete = isDelete;
     }
+
+    public Warehouse(Integer id) {
+        this.id = id;
+    }
 }

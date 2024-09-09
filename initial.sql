@@ -5,33 +5,33 @@ insert into `warehouses` (`name`) values
 insert into `salers` (`name`) values 
 ('Linhttm'), ('Hantm'), ('HaiLA'), ('ĐucLĐ BU3'), ('ToTKV'), ('Anh Đức');
 
-insert into `stock_notes` (`edit_time`, `warehouse_id`, `release_date`, `so`, `partner`, `sale_id`, `note`) values
-('2024-08-29 14:30:00', 1, '2024-07-22', 'SO13910', 'Happy Home', 1, ''),
-('2024-08-29 14:30:00', 1, '2024-07-25', 'SO14807', 'Sinh Hùng', 2, ''),
-('2024-08-29 14:30:00', 1, '2024-07-30', 'SO15332', 'TNS', 2, ''),
-('2024-08-29 14:30:00', 1, '2024-07-30', 'SO15330', 'HUA YUE', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-01', 'SO15359', 'Chính Nhân', 4, ''),
-('2024-08-29 14:30:00', 1, '2024-08-06', 'SO15375', 'Mai Nguyễn', 5, ''),
-('2024-08-29 14:30:00', 1, '2024-08-06', 'SO15372', 'BÌNH MINH', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-07', 'SO15388', 'Khang Yến', 2, ''),
-('2024-08-29 14:30:00', 1, '2024-08-09', 'SO15276', 'Innotel', 2, ''),
-('2024-08-29 14:30:00', 1, '2024-08-09', 'SO15418', 'Sunshine', 2, ''),
-('2024-08-29 14:30:00', 1, '2024-08-09', 'SO15390', 'SUNTEL', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-09', 'SO15415', 'ROBO', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-09', 'SO15370', 'SLA', 2, 'Xuất kho 96VC (Nhà chị Tố)'),
-('2024-08-29 14:30:00', 1, '2024-08-12', 'SO15414', 'NMS', 2, ''),
-('2024-08-29 14:30:00', 1, '2024-08-12', 'SO15437', 'ROBO', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-12', 'SO15360', 'Realtek', 3, 'Đổi bảo hành cho khách của anh hải'),
-('2024-08-29 14:30:00', 1, '2024-08-15', '', '', 6, 'Test bảo hành cho khách'),
-('2024-08-29 14:30:00', 1, '2024-08-15', 'SO15446', 'T2Q', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-18', 'SO15507', 'KTVT Vũng Tàu', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-24', '', '', null, 'Lấy về nhà chị tố'),
-('2024-08-29 14:30:00', 1, '2024-08-24', 'SO15449', '', 4, 'Gửi ra SSS HN theo mail của Long Đặng Văn Long'),
-('2024-08-29 14:30:00', 1, '2024-08-24', 'SO15541', 'BIZFONE', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-27', '', '', null, 'Lấy về nhà chị tố'),
-('2024-08-29 14:30:00', 1, '2024-08-27', 'SO15564', 'ROBO', 3, ''),
-('2024-08-29 14:30:00', 1, '2024-08-28', 'SO15579', 'LE SATO', 2, 'Xuất kho 96VC (Nhà chị Tố)'),
-('2024-08-29 14:30:00', 1, '2024-08-28', 'SO15580', 'GM', 3, '');
+insert into `stock_notes` ( `warehouse_id`, `release_date`, `so`, `partner`, `sale_id`, `note`) values
+(1, '2024-07-22', 'SO13910', 'Happy Home', 1, ''),
+(1, '2024-07-25', 'SO14807', 'Sinh Hùng', 2, ''),
+(1, '2024-07-30', 'SO15332', 'TNS', 2, ''),
+(1, '2024-07-30', 'SO15330', 'HUA YUE', 3, ''),
+(1, '2024-08-01', 'SO15359', 'Chính Nhân', 4, ''),
+(1, '2024-08-06', 'SO15375', 'Mai Nguyễn', 5, ''),
+(1, '2024-08-06', 'SO15372', 'BÌNH MINH', 3, ''),
+(1, '2024-08-07', 'SO15388', 'Khang Yến', 2, ''),
+(1, '2024-08-09', 'SO15276', 'Innotel', 2, ''),
+(1, '2024-08-09', 'SO15418', 'Sunshine', 2, ''),
+(1, '2024-08-09', 'SO15390', 'SUNTEL', 3, ''),
+(1, '2024-08-09', 'SO15415', 'ROBO', 3, ''),
+(1, '2024-08-09', 'SO15370', 'SLA', 2, 'Xuất kho 96VC (Nhà chị Tố)'),
+(1, '2024-08-12', 'SO15414', 'NMS', 2, ''),
+(1, '2024-08-12', 'SO15437', 'ROBO', 3, ''),
+(1, '2024-08-12', 'SO15360', 'Realtek', 3, 'Đổi bảo hành cho khách của anh hải'),
+(1, '2024-08-15', '', '', 6, 'Test bảo hành cho khách'),
+(1, '2024-08-15', 'SO15446', 'T2Q', 3, ''),
+(1, '2024-08-18', 'SO15507', 'KTVT Vũng Tàu', 3, ''),
+(1, '2024-08-24', '', '', null, 'Lấy về nhà chị tố'),
+(1, '2024-08-24', 'SO15449', '', 4, 'Gửi ra SSS HN theo mail của Long Đặng Văn Long'),
+(1, '2024-08-24', 'SO15541', 'BIZFONE', 3, ''),
+(1, '2024-08-27', '', '', null, 'Lấy về nhà chị tố'),
+(1, '2024-08-27', 'SO15564', 'ROBO', 3, ''),
+(1, '2024-08-28', 'SO15579', 'LE SATO', 2, 'Xuất kho 96VC (Nhà chị Tố)'),
+(1, '2024-08-28', 'SO15580', 'GM', 3, '');
 
 insert into `items` (`part_number`, `description`, `stock_node_id`) value ('RG-AP820- L(V2)', 'Thiết bị thu phát vô tuyến RUIJIE_RG-AP820-L(V2)', 1);
 insert into `items_serials` (`serial`, `item_id`) values
@@ -162,21 +162,26 @@ insert into `items_serials` (`serial`, `item_id`) values
 ('G1T03GV04832A', 38), ('G1T03GV00966B', 38), ('G1T03GV048452', 38);
 
 select n.note, n.partner, n.release_date, n.so, i.description, i.part_number, s.name, ifnull(i.count, count(sr.item_id)) as count from stock_notes n
-join items i on n.id = i.stock_node_id
+left join items i on n.id = i.stock_node_id
 left join salers s on n.sale_id = s.id
 left join items_serials sr on i.id = sr.item_id
-where (i.description like '%%'
-or i.part_number like '%%'
-or sr.serial like '%%'
-or s.name like '%%'
+where ((isnull(i.description) or i.description like '%%')
+or (isnull(i.part_number) or i.part_number like '%%')
+or (isnull(sr.serial) or sr.serial like '%%')
+or (isnull(s.name) or s.name like '%%')
 or n.partner like '%%'
 or n.so like '%%')
 and (isnull(null) or n.release_date >= '2024-07-30')
 and (isnull(null) or n.release_date <= '2024-08-06')
-and n.warehouse_id = 1
-and (n.is_delete = 0 and i.is_delete = 0)
-group by i.id, n.release_date, n.so
+and n.warehouse_id = 3
+and (n.is_delete = 0 and (isnull(i.is_delete) or i.is_delete = 0))
+group by i.id, n.release_date, n.so, i.description, n.note, n.partner, s.name
 order by n.release_date desc, n.so;
+
+
+
+
+
 
 select * from items;
 
@@ -236,8 +241,8 @@ select part_number, count(*) from items i
 group by part_number
 
 
-select
-#     ifnull(i.count, count(s.id)) countData,
+select sn.id as stockNoteId, sn.image,
+    ifnull(i.count, count(s.id)) countData,
     sn.so, sn.release_date
 from items i
 left join items_serials s on i.id = s.item_id
@@ -252,3 +257,6 @@ group by i.stock_node_id, i.count;
 
 select * from warehouses;
 select * from items_serials;
+select * from items;
+select * from stock_notes n where not isnull(n.image) ;
+

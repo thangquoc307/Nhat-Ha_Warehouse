@@ -7,10 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.warehouse.dto.*;
 import org.warehouse.model.Item;
-import org.warehouse.repository.IItemSerialRepository;
-import org.warehouse.repository.ISalerRepository;
-import org.warehouse.repository.IStockNoteRepository;
-import org.warehouse.repository.IWarehouseRepository;
+import org.warehouse.model.Saler;
+import org.warehouse.model.StockNote;
+import org.warehouse.model.Warehouse;
+import org.warehouse.repository.*;
 import org.warehouse.service.IStockNoteService;
 
 import java.time.LocalDate;
@@ -28,6 +28,8 @@ public class StockNoteService implements IStockNoteService {
     private IItemSerialRepository iItemSerialRepository;
     @Autowired
     private ISalerRepository salerRepository;
+    @Autowired
+    private IItemRepository itemRepository;
     @Override
     public Page<IItemShowDto> getStockNoteForShow(
             String search, LocalDate startDate, LocalDate endDate,
@@ -60,9 +62,57 @@ public class StockNoteService implements IStockNoteService {
                 itemDetailDto.setCount(serialDtoList.size());
             }
         });
-        return itemDetailDtos
-                .stream().filter(
-                        itemDetailDto -> itemDetailDto.getCount() != 0)
-                .collect(Collectors.toList());
+        return itemDetailDtos;
+    }
+
+    @Override
+    public StockCreateDto getStockCreate(Integer id) {
+        return stockNoteRepository.getStockNoteForEdit(id);
+    }
+
+    @Override
+    public void modifyStock(StockCreateDto stockCreateDto) {
+        StockNote stockNote = new StockNote(
+                stockCreateDto.getId(),
+                stockCreateDto.getReleaseDate(),
+                stockCreateDto.getSo(),
+                stockCreateDto.getPartner(),
+                stockCreateDto.getNote(),
+                stockCreateDto.getSalerId() == 0 ? null :
+                        new Saler(stockCreateDto.getSalerId()),
+                new Warehouse(stockCreateDto.getWarehouseId()));
+        stockNoteRepository.save(stockNote);
+    }
+
+    @Override
+    public ItemCreateDto getItemCreate(Integer id) {
+        return itemRepository.getItemForEdit(id);
+    }
+
+    @Override
+    public void modifyItem(ItemCreateDto itemCreateDto) {
+        Item item = new Item(
+                itemCreateDto.getId(),
+                itemCreateDto.getPartNumber(),
+                itemCreateDto.getDescription(),
+                itemCreateDto.isHasSerial() ? null : 0,
+                new StockNote(itemCreateDto.getStockNoteId())
+        );
+        itemRepository.save(item);
+    }
+
+    @Override
+    public void createPdf(byte[] data, Integer id) {
+        StockNote stockNote = stockNoteRepository.findById(id).get();
+        if (stockNote != null) {
+            stockNote.setImage(data);
+            stockNoteRepository.save(stockNote);
+        }
+    }
+
+    @Override
+    public byte[] getImage(Integer id) {
+        StockNote stockNote = stockNoteRepository.findById(id).get();
+        return stockNote.getImage();
     }
 }
