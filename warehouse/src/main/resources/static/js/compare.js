@@ -2,6 +2,7 @@ let workbook;
 let worksheet;
 let endRow = 0;
 let arrayData = [];
+let finalData = [];
 
 class DataExcel {
     partNumber;
@@ -67,6 +68,7 @@ let changeColumn = () => {
         let partValue = $("#select-part").val();
         let quantityVal = $("#select-quantity").val();
         arrayData = [];
+        finalData = [];
 
         if (partValue != "" && quantityVal != "") {
             for (let i = 0; i <= endRow; i++) {
@@ -75,6 +77,7 @@ let changeColumn = () => {
                 if (partData && partData.v && typeof partData.v === 'string' &&
                     countData && countData.v && !isNaN(countData.v)) {
                     arrayData.push(new DataExcel(partData.v, countData.v));
+                    finalData.push(new DataExcel(partData.v, countData.v));
                 }
             }
         }
@@ -133,13 +136,21 @@ let showConfirmModal = () => {
                 <div></div>
                 <div class="boxshadow-outset borderradius color0">
                     <h4 class="mb-2">Review Data</h4>
-                    <div class="display-table scroll-custom"><table class="table table-striped">
+                    <div class="input-group mb-3">
+                      <span class="input-group-text material-symbols-outlined">vertical_split</span>
+                      <input type="text" class="form-control" 
+                        id="split-word"
+                        placeholder="Split Word"
+                        onkeyup="splitData()">
+                    </div>
+                    <div class="display-table scroll-custom">
+                    <table class="table table-striped">
                     <thead><tr>
                         <th>No</th>
                         <th>Part Number</th>
                         <th>Quantity</th>
                     </tr></thead>
-                    <tbody>
+                    <tbody id="confirm-data">
                         ${arrayData.reduce((prev, cur, index) => {
                             return prev + `<tr>
                                 <td>${index}</td>
@@ -168,11 +179,11 @@ let closeShowModal = () => {
 }
 let sendData = () => {
     $(function () {
-        if (arrayData.length > 0) {
+        if (finalData.length > 0) {
             $.ajax({
                 type: "POST",
                 contentType: "application/json",
-                data: JSON.stringify(arrayData),
+                data: JSON.stringify(finalData),
                 url: `${urlApi}compare/send`,
                 success: () => {
                     setupData();
@@ -181,5 +192,33 @@ let sendData = () => {
             })
         }
     })
+}
+let splitData = () => {
+    $(function () {
+        let text = $("#split-word").val();
+        finalData = arrayData.map(value => {
+            let parts = (value.partNumber.includes(text) && text != "")
+                ? value
+                .partNumber
+                .split(text)
+                .slice(1)
+                .join(text) : value.partNumber;
+            return {
+                partNumber: parts,
+                count: value.count
+            };
+        });
+
+        console.log(finalData)
+        $("#confirm-data").html(
+            finalData.reduce((prev, cur, index) => {
+                return prev + `<tr>
+                    <td>${index + 1}</td>
+                    <td>${cur.partNumber}</td>
+                    <td>${cur.count}</td>
+                </tr>`;
+            }, "")
+        );
+    });
 }
 setupData();

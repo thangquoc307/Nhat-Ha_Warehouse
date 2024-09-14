@@ -1,16 +1,23 @@
 let idDelModal = "lqt-delete-modal";
 let mode = {
     WAREHOUSE: "warehouse",
-    STOCK: "stock",
-    ITEM: "item",
-    SERIAL: "serial",
-    SALER: "saler"
+    OUTBOUND: "outbound",
+    INBOUND: "inbound",
+    OUTBOUND_ITEM: "outbound-item",
+    INBOUND_ITEM: "inbound-item",
+    OUTBOUND_SERIAL: "outbound-serial",
+    INBOUND_SERIAL: "inbound-serial",
+    SALER: "saler",
+    MANUFACTURER: "manufacturer"
 }
 
 let showDeleteModal = (id, name, modeStt) => {
-    if (modeStt == mode.STOCK) {
-        name = stockName;
-        id = stockChoosedId;
+    if (modeStt == "stock") {
+        modeStt = isInbound ? mode.INBOUND : mode.OUTBOUND;
+    }
+    if (modeStt == mode.OUTBOUND) {
+        name = outboundChoosedName;
+        id = outboundChoosedId;
     }
     $(function () {
         closePopup();
@@ -26,7 +33,6 @@ let showDeleteModal = (id, name, modeStt) => {
                         <span class="material-symbols-outlined">delete</span> Delete
                     </button>
                 </div>
-               
             </div>`);
     });
 }
@@ -43,7 +49,6 @@ let confirmDel = (id, mode) => {
     closeModal();
 }
 let deleteContent = (id, sttMode) => {
-    console.log(`${urlApi}delete/${sttMode}/${id}`)
     $.ajax({
         type: "DELETE",
         url: `${urlApi}delete/${sttMode}/${id}`,
@@ -52,19 +57,22 @@ let deleteContent = (id, sttMode) => {
                 case mode.WAREHOUSE:
                     gotoLink("/publish/home");
                     break;
-                case mode.STOCK:
+                case mode.OUTBOUND:
+                case mode.INBOUND:
                     resetDetail();
                     pageableLoad(pagePageable);
                     break;
-                case mode.ITEM:
-                case mode.SERIAL:
+                case mode.INBOUND_ITEM:
+                case mode.OUTBOUND_ITEM:
+                case mode.INBOUND_SERIAL:
+                case mode.OUTBOUND_SERIAL:
                     pageableLoad(pagePageable);
                     showDetail(null, "");
                     break;
                 case mode.SALER:
+                case mode.MANUFACTURER:
                     break;
             }
-
         }
     })
 }

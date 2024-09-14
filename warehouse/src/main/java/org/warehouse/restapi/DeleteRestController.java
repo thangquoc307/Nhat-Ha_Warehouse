@@ -20,10 +20,14 @@ public class DeleteRestController {
             @PathVariable Integer id) {
         switch (mode) {
             case "warehouse" -> deleteService.deleteWarehouse(id);
-            case "stock" -> deleteService.deleteStock(id);
-            case "item" -> deleteService.deleteItem(id);
-            case "serial" -> deleteService.deleteSerial(id);
+            case "outbound" -> deleteService.deleteOutbound(id);
+            case "inbound" -> deleteService.deleteInbound(id);
+            case "outboundItem" -> deleteService.deleteOutboundItem(id);
+            case "inboundItem" -> deleteService.deleteInboundItem(id);
+            case "outboundSerial" -> deleteService.deleteOutboundSerial(id);
+            case "inboundSerial" -> deleteService.deleteInboundSerial(id);
             case "saler" -> deleteService.deleteSaler(id);
+            case "manufacturer" -> deleteService.deleteManufacturer(id);
         }
         return new ResponseEntity<>(HttpStatus.OK);
     }

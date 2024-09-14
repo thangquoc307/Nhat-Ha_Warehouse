@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.warehouse.model.outbound.Outbound;
 
 import java.io.Serializable;
 import java.util.List;
@@ -23,7 +24,7 @@ public class Saler implements Serializable {
     private String name;
     @OneToMany(mappedBy = "saler")
     @JsonBackReference
-    private List<StockNote> stockNotes;
+    private List<Outbound> outbounds;
     @Column(columnDefinition = "bit(1) default 0")
     private Boolean isDelete;
 

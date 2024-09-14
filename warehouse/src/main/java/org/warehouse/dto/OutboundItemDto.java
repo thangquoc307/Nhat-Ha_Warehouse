@@ -9,7 +9,8 @@
 //@Setter
 //@NoArgsConstructor
 //@AllArgsConstructor
-//public class CountDto {
-//    private Integer id;
+//public class OutboundItemDto {
 //    private Integer count;
+//    private String description;
+//    private String partNumber;
 //}

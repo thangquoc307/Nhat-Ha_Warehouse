@@ -1,4 +1,4 @@
-package org.warehouse.model;
+package org.warehouse.model.outbound;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -8,29 +8,29 @@ import lombok.Setter;
 
 import java.io.Serializable;
 @Entity
-@Table(name = "items_serials")
+@Table(name = "outbound_items_serials")
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ItemSerial implements Serializable {
+public class OutboundItemSerial implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String serial;
     @ManyToOne
-    @JoinColumn(name = "itemId", referencedColumnName = "id")
-    private Item item;
+    @JoinColumn(name = "outboundItemId", referencedColumnName = "id")
+    private OutboundItem outboundItem;
     @Column(columnDefinition = "bit(1) default 0")
     private Boolean isDelete;
 
-    public ItemSerial(String serial, Item item) {
+    public OutboundItemSerial(String serial, OutboundItem outboundItem) {
         this.serial = serial;
-        this.item = item;
+        this.outboundItem = outboundItem;
         this.isDelete = false;
     }
 
-    public ItemSerial(Integer id, String serial, Boolean isDelete) {
+    public OutboundItemSerial(Integer id, String serial, Boolean isDelete) {
         this.id = id;
         this.serial = serial;
         this.isDelete = isDelete;

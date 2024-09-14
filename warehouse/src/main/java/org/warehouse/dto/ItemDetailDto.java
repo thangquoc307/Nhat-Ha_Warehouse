@@ -16,13 +16,15 @@ public class ItemDetailDto {
     private String partNumber;
     private String description;
     private Integer count;
+    private String manufacturer;
     private List<IItemSerialDto> itemSerials;
     private Boolean hasSerial;
 
-    public ItemDetailDto(Integer id, String partNumber, String description, Integer count) {
+    public ItemDetailDto(Integer id, String partNumber, String description, Integer count, String manufacturer) {
         this.id = id;
         this.partNumber = partNumber;
         this.description = description;
         this.count = count;
+        this.manufacturer = manufacturer;
     }
 }

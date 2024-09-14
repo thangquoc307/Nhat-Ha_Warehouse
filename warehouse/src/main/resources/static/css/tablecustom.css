@@ -34,6 +34,7 @@
 .table-so>div>div {
     background-color: var(--color-2);
 }
+.table-manufacturer,
 .table-date,
 .table-partner,
 .table-saler {
@@ -111,9 +112,6 @@
     position: absolute;
     bottom: 20px;
     left: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
 }
 .option-control>div {
     padding: 5px 20px;
@@ -125,6 +123,7 @@
     color: var(--color-0);
     cursor: pointer;
     transition-duration: 0.2s;
+    width: 175px;
 }
 .option-control>div:hover {
     transition-duration: 0.2s;
@@ -155,8 +154,9 @@
     background-color: var(--color-5);
 }
 .table-file {
-    max-width: 50px;
-    min-width: 50px;
+    max-width: 100px;
+    min-width: 100px;
+    width: 100px;
 }
 .table-file>div>span {
     color: var(--color-0);
@@ -180,4 +180,27 @@
 .disable-button {
     pointer-events: none;
     background-color: var(--color-3) !important;
+}
+
+.stock-mode-input:checked + .stock-mode-lable {
+    background-color: var(--color-1);
+
+}
+.stock-mode-lable {
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+    border: var(--border-normal);
+    background-color: var(--color-4);
+    color: var(--color-0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 25px !important;
+    cursor: pointer;
+    transition-duration: 0.2s;
+}
+.stock-mode-lable:hover {
+    scale: 1.1;
+    transition-duration: 0.2s;
+    background-color: var(--color-5);
 }

@@ -54,7 +54,7 @@ let showWareHouseManager = (modeStt) => {
                         <span class="material-symbols-outlined"
                             onclick="showEditData(${cur.id}, '${modeStt}')">edit</span>
                         <span class="material-symbols-outlined"
-                            onclick="showDeleteModal('${cur.id}', '${cur.name}', '${mode.WAREHOUSE}')">delete</span>
+                            onclick="showDeleteModal('${cur.id}', '${cur.name}', '${modeStt}')">delete</span>
                     </div>`;
                 }, "");
                 $("body").append(`<div id="popup">

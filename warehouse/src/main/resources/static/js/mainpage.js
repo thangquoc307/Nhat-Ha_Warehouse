@@ -1,8 +1,11 @@
+let isInbound = false;
 let itemOfPage = 12;
 let pagePageable = 0;
 let urlApi = "http://localhost:8080/api/1.0/";
-let stockChoosedId = 0;
-let stockName = "";
+let outboundChoosedId = 0;
+let inboundChoosedId = 0;
+let outboundChoosedName = "";
+let inboundChoosedName = "";
 let listSerial = [];
 let idSerialEdited = 0;
 class SerialItem {
@@ -22,67 +25,218 @@ let pageableLoad = (page) => {
         let startDate = $("#start-date-input").val();
         let endDate = $("#end-date-input").val();
         let searchInput = $("#search-input").val();
+        isInbound = $("#input").prop('checked');
 
-        $.ajax({
-            type: "GET",
-            url: `${urlApi}warehouse/show`
-                + `?search=${searchInput}&warehouseId=${warehouseId}`
-                + `&startDate=${startDate}&endDate=${endDate}`
-                + `&page=${page}&size=${itemOfPage}`,
-            success: (result, status, xhr) => {
-                if (xhr.status === 200) {
-                    let arrayData = result.content;
-                    let totalPage = result.totalPages;
-                    pagePageable = result.number;
+        if (isInbound) {
+            $.ajax({
+                type: "GET",
+                url: `${urlApi}warehouse/show-inbound`
+                    + `?search=${searchInput}&warehouseId=${warehouseId}`
+                    + `&startDate=${startDate}&endDate=${endDate}`
+                    + `&page=${page}&size=${itemOfPage}`,
+                success: (result, status, xhr) => {
+                    if (xhr.status === 200) {
+                        let arrayData = result.content;
+                        let totalPage = result.totalPages;
+                        pagePageable = result.number;
 
-                    let curMonth = "";
-                    let monthArray = arrayData.map(value => getMonth(value.releaseDate));
+                        let curMonth = "";
+                        let monthArray = arrayData.map(value => getMonth(value.releaseDate));
 
-                    let curDate = "";
-                    let dateArray = arrayData.map(value => value.releaseDate);
+                        let curDate = "";
+                        let dateArray = arrayData.map(value => value.releaseDate);
 
-                    let curId = "";
-                    let idArray = arrayData.map(value => value.id);
+                        let curId = "";
+                        let idArray = arrayData.map(value => value.id);
 
-                    $("#stock-data").html(
-                        arrayData.reduce((prev, cur, index) => {
-                            let strMonth = getMonth(cur.releaseDate);
-                            let isNewMonth = strMonth != curMonth
-                            let countRow;
-                            if (isNewMonth) {
-                                curMonth = strMonth;
-                                countRow = countInArray(monthArray, strMonth);
-                            }
+                        $("#stock-title").html(`<tr>
+                            <th colspan="2">Ngày xuất</th>
+                            <th>Mã nhập kho</th>
+                            <th>Hãng</th>
+                            <th>Mã hàng</th>
+                            <th>Thiết bị</th>
+                            <th>SL</th>
+                            <th>Nơi gửi</th>
+                            <th>File</th>
+                            <th>Ghi chú</th>
+                        </tr>`)
 
-                            let isNewDate = cur.releaseDate != curDate
-                            let countDate;
-                            if (isNewDate) {
-                                curDate = cur.releaseDate;
-                                countDate = countInArray(dateArray, curDate);
-                            }
+                        $("#stock-data").html(
+                            arrayData.reduce((prev, cur, index) => {
+                                let strMonth = getMonth(cur.releaseDate);
+                                let isNewMonth = strMonth != curMonth
+                                let countRow;
+                                if (isNewMonth) {
+                                    curMonth = strMonth;
+                                    countRow = countInArray(monthArray, strMonth);
+                                }
 
-                            let isNewStock = cur.id != curId;
-                            let countId;
-                            if (isNewStock) {
-                                curId = cur.id;
-                                countId = countInArray(idArray, curId);
-                            }
+                                let isNewDate = cur.releaseDate != curDate
+                                let countDate;
+                                if (isNewDate) {
+                                    curDate = cur.releaseDate;
+                                    countDate = countInArray(dateArray, curDate);
+                                }
 
-                            return prev + `<tr>
-                                ${isNewMonth ? "<td class='table-month text-center' rowspan='" 
+                                let isNewStock = cur.id != curId;
+                                let countId;
+                                if (isNewStock) {
+                                    curId = cur.id;
+                                    countId = countInArray(idArray, curId);
+                                }
+
+                                return prev + `<tr>
+                                ${isNewMonth ? "<td class='table-month text-center' rowspan='"
                                     + countRow + "'>" + curMonth + "</td>" : ""}
-                                ${isNewDate ? "<td class='table-date text-center' rowspan='" 
+                                ${isNewDate ? "<td class='table-date text-center' rowspan='"
+                                    + countDate + "'>" + coverDate(cur.releaseDate) + "</td>" : ""}
+                                ${isNewStock ? "<td class='table-so text-ellipsis' rowspan='"
+                                    + countId + "'><div>"
+                                    + "<div id='start-button-" + cur.id
+                                    + "' class='material-symbols-outlined "
+                                    + (cur.id == inboundChoosedId ? "active-icon'" : "'")
+                                    + "onclick='showDetail(" + cur.id + ", \"" + cur.inboundCode + "\")'>start</div>"
+                                    + (cur.inboundCode ?? "")
+                                    + "</div></td>" : ""}
+                                <td class="table-manufacturer text-ellipsis"
+                                 title="${cur.name ?? ""}">${cur.name ?? ""}</td>
+                                <td class="table-partnumber text-ellipsis"
+                                 title="${cur.partNumber}">${cur.partNumber ?? "Chưa có thông tin"}</td>
+                                <td class="table-description text-ellipsis"
+                                 title="${cur.description}">${cur.description ?? "Chưa có thông tin"}</td>
+                                <td class="table-count text-center">${cur.count}</td>
+                                
+                                ${isNewStock ? "<td class='table-saler text-ellipsis' title='" + (cur.locationFrom ?? "")
+                                    + "' rowspan='" + countId + "'>" + (cur.locationFrom ?? "") + "</td>" : ""}
+                                ${isNewStock ? "<td class='table-file' "
+                                    + "rowspan='" + countId + "'><div class='d-flex flex-row gap-2 justify-content-center align-items-center'>"
+                                    + `<span class="material-symbols-outlined" onclick='uploadPdf(${cur.id})'>upload_file</span>`
+                                    + (cur.image == null
+                                            ? `<span class="material-symbols-outlined disable-button">image</span>`
+                                            : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id})">image</span>`
+                                    ) + "</div></td>" : ""}
+                                ${isNewStock ? "<td class='table-note text-ellipsis' title='" + cur.note
+                                    + "' rowspan='" + countId + "'>" + cur.note + "</td>" : ""}
+                            </tr>`;
+                            }, "")
+                        )
+                        $("#content-table-pageable").html(
+                            (pagePageable > 0 ?
+                                `<div class="material-symbols-outlined boundarybutton-active"
+                        onclick="pageableLoad(${pagePageable - 1})">stat_2</div>`
+                                : `<div class="material-symbols-outlined boundarybutton-inactive"
+                        >do_not_disturb_on</div>`) +
+
+                            (pagePageable > 1 && totalPage - pagePageable <= 1 ?
+                                `<div onclick="pageableLoad(${pagePageable - 2})">
+                        ${pagePageable - 1}</div>` : "") +
+
+                            (pagePageable > 0 ?
+                                `<div onclick="pageableLoad(${pagePageable - 1})">
+                        ${pagePageable}</div>` : "") +
+
+                            `<div class="current-page">${pagePageable + 1}</div>` +
+
+                            (totalPage - pagePageable > 1 ?
+                                `<div onclick="pageableLoad(${pagePageable + 1})">
+                        ${pagePageable + 2}</div>` : "") +
+
+                            (totalPage - pagePageable > 2 && pagePageable < 1 ?
+                                `<div onclick="pageableLoad(${pagePageable + 2})">
+                        ${pagePageable + 3}</div>` : "") +
+
+                            (totalPage - pagePageable > 1 ?
+                                `<div class="material-symbols-outlined boundarybutton-active"
+                        onclick="pageableLoad(${pagePageable + 1})">stat_minus_2</div>`
+                                : `<div class="material-symbols-outlined boundarybutton-inactive"
+                        >do_not_disturb_on</div>`)
+                        )
+                    } else {
+                        $("#content-table-pageable").empty();
+                        $("#stock-data").html(`<tr>
+                         <td colspan="10" id="no-content-alert">
+                            <img src="/alert_image/204_v2.svg">
+                        </td>
+                    </tr>`)
+                    }
+                },
+            })
+        } else {
+            $.ajax({
+                type: "GET",
+                url: `${urlApi}warehouse/show-outbound`
+                    + `?search=${searchInput}&warehouseId=${warehouseId}`
+                    + `&startDate=${startDate}&endDate=${endDate}`
+                    + `&page=${page}&size=${itemOfPage}`,
+                success: (result, status, xhr) => {
+                    if (xhr.status === 200) {
+                        let arrayData = result.content;
+                        let totalPage = result.totalPages;
+                        pagePageable = result.number;
+
+                        let curMonth = "";
+                        let monthArray = arrayData.map(value => getMonth(value.releaseDate));
+
+                        let curDate = "";
+                        let dateArray = arrayData.map(value => value.releaseDate);
+
+                        let curId = "";
+                        let idArray = arrayData.map(value => value.id);
+
+                        $("#stock-title").html(`<tr>
+                        <th colspan="2">Ngày xuất</th>
+                        <th>Số SO</th>
+                        <th>Partner</th>
+                        <th>Hãng</th>
+                        <th>Mã hàng</th>
+                        <th>Thiết bị</th>
+                        <th>SL</th>
+                        <th>Saler</th>
+                        <th>File</th>
+                        <th>Ghi chú</th>
+                    </tr>`)
+
+                        $("#stock-data").html(
+                            arrayData.reduce((prev, cur, index) => {
+                                let strMonth = getMonth(cur.releaseDate);
+                                let isNewMonth = strMonth != curMonth
+                                let countRow;
+                                if (isNewMonth) {
+                                    curMonth = strMonth;
+                                    countRow = countInArray(monthArray, strMonth);
+                                }
+
+                                let isNewDate = cur.releaseDate != curDate
+                                let countDate;
+                                if (isNewDate) {
+                                    curDate = cur.releaseDate;
+                                    countDate = countInArray(dateArray, curDate);
+                                }
+
+                                let isNewStock = cur.id != curId;
+                                let countId;
+                                if (isNewStock) {
+                                    curId = cur.id;
+                                    countId = countInArray(idArray, curId);
+                                }
+
+                                return prev + `<tr>
+                                ${isNewMonth ? "<td class='table-month text-center' rowspan='"
+                                    + countRow + "'>" + curMonth + "</td>" : ""}
+                                ${isNewDate ? "<td class='table-date text-center' rowspan='"
                                     + countDate + "'>" + coverDate(cur.releaseDate) + "</td>" : ""}
                                 ${isNewStock ? "<td class='table-so' rowspan='"
                                     + countId + "'><div>"
-                                    + "<div id='start-button-" + cur.id 
-                                    + "' class='material-symbols-outlined " 
-                                    + (cur.id == stockChoosedId ? "active-icon'" : "'") 
+                                    + "<div id='start-button-" + cur.id
+                                    + "' class='material-symbols-outlined "
+                                    + (cur.id == outboundChoosedId ? "active-icon'" : "'")
                                     + "onclick='showDetail(" + cur.id + ", \"" + cur.so + "\")'>start</div>"
-                                    + cur.so
+                                    + (cur.so ?? "")
                                     + "</div></td>" : ""}
-                                ${isNewStock ? "<td class='table-partner text-ellipsis' title='" + cur.partner 
-                                    + "' rowspan='" + countId + "'>" + cur.partner + "</td>" : ""}
+                                ${isNewStock ? "<td class='table-partner text-ellipsis' title='" + cur.partner
+                                    + "' rowspan='" + countId + "'>" + (cur.partner ?? "") + "</td>" : ""}
+                                <td class="table-manufacturer text-ellipsis"
+                                 title="${cur.manufacturer ?? ""}">${cur.manufacturer ?? ""}</td>
                                 <td class="table-partnumber text-ellipsis"
                                  title="${cur.partNumber}">${cur.partNumber ?? "Chưa có thông tin"}</td>
                                 <td class="table-description text-ellipsis"
@@ -93,57 +247,58 @@ let pageableLoad = (page) => {
                                     + "' rowspan='" + countId + "'>" + (cur.name ?? "") + "</td>" : ""}
                                 ${isNewStock ? "<td class='table-file' "
                                     + "rowspan='" + countId + "'><div class='d-flex flex-row gap-2 justify-content-center align-items-center'>"
-                                + `<span class="material-symbols-outlined" onclick='uploadPdf(${cur.id})'>upload_file</span>`
-                                + (cur.image == null 
-                                    ? `<span class="material-symbols-outlined disable-button">image</span>` 
-                                    : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id})">image</span>`
-                                ) + "</div></td>" : ""}
+                                    + `<span class="material-symbols-outlined" onclick='uploadPdf(${cur.id})'>upload_file</span>`
+                                    + (cur.image == null
+                                            ? `<span class="material-symbols-outlined disable-button">image</span>`
+                                            : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id})">image</span>`
+                                    ) + "</div></td>" : ""}
                                 ${isNewStock ? "<td class='table-note text-ellipsis' title='" + cur.note
                                     + "' rowspan='" + countId + "'>" + cur.note + "</td>" : ""}
                             </tr>`;
-                        }, "")
-                    )
-                    $("#content-table-pageable").html(
-                        (pagePageable > 0 ?
-                            `<div class="material-symbols-outlined boundarybutton-active"
+                            }, "")
+                        )
+                        $("#content-table-pageable").html(
+                            (pagePageable > 0 ?
+                                `<div class="material-symbols-outlined boundarybutton-active"
                         onclick="pageableLoad(${pagePageable - 1})">stat_2</div>`
-                            : `<div class="material-symbols-outlined boundarybutton-inactive"
+                                : `<div class="material-symbols-outlined boundarybutton-inactive"
                         >do_not_disturb_on</div>`) +
 
-                        (pagePageable > 1 && totalPage - pagePageable <= 1 ?
-                            `<div onclick="pageableLoad(${pagePageable - 2})">
+                            (pagePageable > 1 && totalPage - pagePageable <= 1 ?
+                                `<div onclick="pageableLoad(${pagePageable - 2})">
                         ${pagePageable - 1}</div>` : "") +
 
-                        (pagePageable > 0 ?
-                            `<div onclick="pageableLoad(${pagePageable - 1})">
+                            (pagePageable > 0 ?
+                                `<div onclick="pageableLoad(${pagePageable - 1})">
                         ${pagePageable}</div>` : "") +
 
-                        `<div class="current-page">${pagePageable + 1}</div>` +
+                            `<div class="current-page">${pagePageable + 1}</div>` +
 
-                        (totalPage - pagePageable > 1 ?
-                            `<div onclick="pageableLoad(${pagePageable + 1})">
+                            (totalPage - pagePageable > 1 ?
+                                `<div onclick="pageableLoad(${pagePageable + 1})">
                         ${pagePageable + 2}</div>` : "") +
 
-                        (totalPage - pagePageable > 2 && pagePageable < 1 ?
-                            `<div onclick="pageableLoad(${pagePageable + 2})">
+                            (totalPage - pagePageable > 2 && pagePageable < 1 ?
+                                `<div onclick="pageableLoad(${pagePageable + 2})">
                         ${pagePageable + 3}</div>` : "") +
 
-                        (totalPage - pagePageable > 1 ?
-                            `<div class="material-symbols-outlined boundarybutton-active"
+                            (totalPage - pagePageable > 1 ?
+                                `<div class="material-symbols-outlined boundarybutton-active"
                         onclick="pageableLoad(${pagePageable + 1})">stat_minus_2</div>`
-                            : `<div class="material-symbols-outlined boundarybutton-inactive"
+                                : `<div class="material-symbols-outlined boundarybutton-inactive"
                         >do_not_disturb_on</div>`)
-                    )
-                } else {
-                    $("#content-table-pageable").empty();
-                    $("#stock-data").html(`<tr>
+                        )
+                    } else {
+                        $("#content-table-pageable").empty();
+                        $("#stock-data").html(`<tr>
                          <td colspan="10" id="no-content-alert">
                             <img src="/alert_image/204_v2.svg">
                         </td>
                     </tr>`)
-                }
-            },
-        })
+                    }
+                },
+            })
+        }
     });
 }
 let renderSerial = (arrayItem) => {
@@ -155,26 +310,43 @@ let renderSerial = (arrayItem) => {
                                 onclick="showEditSerial(${cur.id})">edit</span>
                             <span class="material-symbols-outlined"
                                 onclick="showDeleteModal(
-                                    '${cur.id}', '${cur.serial}', '${mode.SERIAL}')"
+                                    '${cur.id}', '${cur.serial}', '${isInbound ? mode.INBOUND_SERIAL : mode.OUTBOUND_SERIAL}')"
                                     >delete</span>
                        </div>`
     }, `<div class="serial-list-detail">`);
     return data + "</div>";
 }
-let showDetail = (stockId, name) => {
+let showDetail = (choosedId, name) => {
     $(function () {
-        $("#start-button-" + stockChoosedId).removeClass("active-icon");
-        if (stockId) {
-            stockChoosedId = stockId;
-            stockName = name;
+        $("#start-button-" + (isInbound ? inboundChoosedId : outboundChoosedId)).removeClass("active-icon");
+        if (isInbound) {
+            outboundChoosedId = 0
         } else {
-            stockId = stockChoosedId;
-            name = stockName;
+            inboundChoosedId = 0;
         }
-        $("#start-button-" + stockId).addClass("active-icon");
+
+        if (isInbound) {
+            if (choosedId) {
+                inboundChoosedId = choosedId;
+                inboundChoosedName = name;
+            } else {
+                choosedId = inboundChoosedId;
+                name = inboundChoosedName;
+            }
+        } else {
+            if (choosedId) {
+                outboundChoosedId = choosedId;
+                outboundChoosedName = name;
+            } else {
+                choosedId = outboundChoosedId;
+                name = outboundChoosedName;
+            }
+        }
+
+        $("#start-button-" + choosedId).addClass("active-icon");
         $.ajax({
             type: "GET",
-            url: `${urlApi}warehouse/item-detail?stockId=${stockId}`,
+            url: `${urlApi}warehouse/${isInbound ? "inbound" : "outbound"}-item-detail?${isInbound ? "inboundId" : "outboundId"}=${choosedId}`,
             success: (result, status, xhr) => {
                 if (xhr.status === 200) {
                     listSerial = [];
@@ -187,7 +359,7 @@ let showDetail = (stockId, name) => {
                                 <div class="line-detail-button d-flex flex-row-reverse gap-1">
                                     <span class="material-symbols-outlined"
                                         onclick="showDeleteModal('${cur.id}', '${cur.partNumber}',
-                                         '${mode.ITEM}')">delete</span>
+                                         '${isInbound ? mode.INBOUND_ITEM : mode.OUTBOUND_ITEM}')">delete</span>
                                     <span class="material-symbols-outlined"
                                         onclick="gotoModifyItem(${cur.id})">edit</span>
                                     ${cur.hasSerial ?
@@ -216,8 +388,8 @@ let showDetail = (stockId, name) => {
 let resetDetail = () => {
     $(function () {
         $("#line-detail").html(`<img src="/alert_image/204.svg">`);
-        stockChoosedId = 0;
-        stockName = "";
+        outboundChoosedId = 0;
+        outboundChoosedName = "";
     })
 }
 let searchingData = () => {
@@ -246,7 +418,7 @@ let closeEditSerial = (id) => {
                 onclick="showEditSerial(${data.id})">edit</span>
             <span class="material-symbols-outlined"
                 onclick="showDeleteModal(
-                    '${data.id}', '${data.name}', '${mode.SERIAL}')"
+                    '${data.id}', '${data.name}', '${isInbound ? mode.INBOUND_SERIAL : mode.OUTBOUND_SERIAL}')"
                     >delete</span>`)
     })
 }
@@ -260,7 +432,7 @@ let sendEditSerial = (id) => {
             contentType: "application/json",
             data: JSON.stringify(data),
             success: () => {
-                showDetail(stockChoosedId, stockName);
+                showDetail(outboundChoosedId, outboundChoosedName);
             }
         })
     })
@@ -322,8 +494,8 @@ let sendEditCount = () => {
 let gotoModifyStock = (isCreate) => {
     $(function () {
         let warehouseId = $("#warehouse-select").val();
-        if (stockChoosedId != 0 && !isCreate) {
-            gotoLink(`/publish/stock?id=${stockChoosedId}&warehouse-id=${warehouseId}`);
+        if (outboundChoosedId != 0 && !isCreate) {
+            gotoLink(`/publish/stock?id=${outboundChoosedId}&warehouse-id=${warehouseId}`);
         } else if (isCreate) {
             gotoLink(`/publish/stock?warehouse-id=${warehouseId}`);
         }
@@ -331,10 +503,10 @@ let gotoModifyStock = (isCreate) => {
 }
 let gotoModifyItem = (editId) => {
     $(function () {
-        if (editId != 0 && stockChoosedId != 0) {
-            gotoLink(`/publish/item?id=${editId}&stock-id=${stockChoosedId}`);
-        } else if (stockChoosedId != 0) {
-            gotoLink(`/publish/item?stock-id=${stockChoosedId}`);
+        if (editId != 0 && outboundChoosedId != 0) {
+            gotoLink(`/publish/item?id=${editId}&stock-id=${outboundChoosedId}`);
+        } else if (outboundChoosedId != 0) {
+            gotoLink(`/publish/item?stock-id=${outboundChoosedId}`);
         }
     })
 }
@@ -342,13 +514,12 @@ let uploadPdf = async (id) => {
     $("#upload-pdf").click();
     $("#upload-pdf").on("change", async function () {
         let fileInput = this.files[0];
-        console.log(fileInput);
         if (fileInput) {
             let formData = new FormData();
             formData.append("file", fileInput);
             try {
                 let response = await $.ajax({
-                    url: `${urlApi}warehouse/upload-pdf/${id}`,
+                    url: `${urlApi}warehouse/upload-pdf/${id}?isInbound=${isInbound}`,
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -364,7 +535,7 @@ let uploadPdf = async (id) => {
 let showPdf = (id) => {
     $(function () {
         $.ajax({
-            url: `${urlApi}warehouse/pdf/${id}`,
+            url: `${urlApi}warehouse/pdf/${id}?isInbound=${isInbound}`,
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'

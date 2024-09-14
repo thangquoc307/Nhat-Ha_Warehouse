@@ -2,7 +2,7 @@ package org.warehouse.dto;
 
 import java.time.LocalDate;
 
-public interface IItemShowDto {
+public interface IOutboundItemShowDto {
     Integer getId();
     String getNote();
     String getPartner();
@@ -13,4 +13,5 @@ public interface IItemShowDto {
     String getName();
     Integer getCount();
     byte[] getImage();
+    String getManufacturer();
 }

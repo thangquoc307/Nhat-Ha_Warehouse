@@ -32,7 +32,7 @@
                 onclick="gotoModifyStock(true)">add</div>
             </div>
         </div>
-        <div class="table-title">
+        <div class="table-title gap-4">
             <div class="input-group">
                 <span class="input-group-text material-symbols-outlined">warehouse</span>
                 <select class="form-select" id="warehouse-select" onchange="pageableLoad(0)">
@@ -41,6 +41,21 @@
                             th:text="${warehouse.getName()}"></option>
                 </select>
             </div>
+
+            <div class="d-flex gap-2 p-1">
+                <input type="radio" class="btn-check stock-mode-input"
+                       name="stock-mode" id="output" checked
+                       onchange="pageableLoad(0)">
+                <label class="material-symbols-outlined stock-mode-lable"
+                       for="output" title="Outbound">upload</label>
+
+                <input type="radio" class="btn-check stock-mode-input"
+                       name="stock-mode" id="input"
+                       onchange="pageableLoad(0)">
+                <label class="material-symbols-outlined stock-mode-lable"
+                       for="input" title="Inbound">download</label>
+            </div>
+
             <h4 class="targetText">THÔNG TIN XUẤT/NHẬP KHO</h4>
         </div>
         <div class="search-tool">
@@ -59,29 +74,20 @@
         </div>
         <div class="pt-3">
             <table class="table-custom">
-                <thead>
-                <tr>
-                    <th colspan="2">Ngày xuất</th>
-                    <th>Số SO</th>
-                    <th>Partner</th>
-                    <th>Mã hàng</th>
-                    <th>Thiết bị</th>
-                    <th>SL</th>
-                    <th>Saler</th>
-                    <th>File</th>
-                    <th>Ghi chú</th>
-                </tr>
-                </thead>
+                <thead id="stock-title"></thead>
                 <tbody id="stock-data"></tbody>
             </table>
         </div>
-        <div class="option-control">
+        <div class="option-control d-flex flex-row gap-2">
             <div onclick="showWareHouseManager('warehouse')">
                 <span class="material-symbols-outlined">warehouse
-                </span> - Warehouse Manage</div>
+                </span> - Warehouse</div>
             <div onclick="showWareHouseManager('saler')">
                 <span class="material-symbols-outlined">group
-                </span> - Saler Manage</div>
+                </span> - Saler</div>
+            <div onclick="showWareHouseManager('manufacturer')">
+                <span class="material-symbols-outlined">factory
+                </span> - Manufacturer</div>
             <div onclick="gotoLink('/publish/compare')">
                 <span class="material-symbols-outlined">compare
                 </span> - Compare</div>
@@ -93,10 +99,10 @@
                  onclick="gotoModifyItem(0)">add</div>
             <div class="material-symbols-outlined"
                  onclick="gotoModifyStock(false)">edit</div>
-            <div onclick="showDeleteModal(0, '', mode.STOCK)"
+            <div onclick="showDeleteModal(0, '', 'stock')"
                  class="material-symbols-outlined">delete</div>
         </div>
-        <h5 class="targetText pe-2">CHI TIẾT PHIẾU XUẤT </h5>
+        <h5 class="targetText pe-2">CHI TIẾT PHIẾU NHẬP / XUẤT </h5>
         <div id="line-detail" class="color3 scroll-custom">
             <img src="/alert_image/204.svg">
         </div>
