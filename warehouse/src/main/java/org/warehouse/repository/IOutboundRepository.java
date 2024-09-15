@@ -17,7 +17,7 @@ import java.util.List;
 public interface IOutboundRepository extends JpaRepository<Outbound, Integer> {
     @Query(nativeQuery = true, value = "select o.id, o.note, o.partner, " +
             "o.release_date, o.image, o.so, i.description, i.part_number, " +
-            "s.name, ifnull(i.count, count(i.id)) as count, m.name as manufacturer " +
+            "s.name, ifnull(i.count, count(sr.id)) as count, m.name as manufacturer " +
             "from outbounds o " +
             "left join outbound_items i on o.id = i.outbound_id " +
             "left join salers s on o.sale_id = s.id " +

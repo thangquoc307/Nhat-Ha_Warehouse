@@ -106,17 +106,17 @@ let sendEditData = (id, mode) => {
         })
     })
 }
-let showEditData = (id, mode) => {
+let showEditData = async (id, mode) => {
+    await closeEditData(idEdited);
+    idEdited = id;
     $(function () {
-        closeEditData(idEdited);
-        idEdited = id;
         let data = editList.find(value => value.id == id);
         $(`#edit-${id}`).html(`<input class="form-control" 
-            type="text" value="${data.name}">
-            <span class="material-symbols-outlined" 
-                onclick="closeEditData(${data.id}, '${mode}')">close</span>
-            <span class="material-symbols-outlined"
-                onclick="sendEditData(${id}, '${mode}')">check</span>`)
+        type="text" value="${data.name}">
+        <span class="material-symbols-outlined" 
+            onclick="closeEditData(${data.id}, '${mode}')">close</span>
+        <span class="material-symbols-outlined"
+            onclick="sendEditData(${id}, '${mode}')">check</span>`)
     })
 }
 

@@ -16,10 +16,6 @@ public interface IOutboundItemSerialRepository extends JpaRepository<OutboundIte
             "join outbound_items i on i.id = s.outbound_item_id " +
             "where i.is_delete = 0 and s.is_delete = 0 and s.outbound_item_id = :itemId")
     List<IItemSerialDto> getItemSerial(@Param("itemId") Integer itemId);
-    @Transactional
-    @Modifying
-    @Query(value = "update OutboundItemSerial o set o.isDelete = true where o.id = :id")
-    void deleteOutboundSerial(@Param("id") Integer id);
 //    @Query(nativeQuery = true, value = "select sn.id as stockNoteId, sn.image, " +
 //            "ifnull(i.count, count(s.id)) countData, " +
 //            "sn.so, sn.release_date " +

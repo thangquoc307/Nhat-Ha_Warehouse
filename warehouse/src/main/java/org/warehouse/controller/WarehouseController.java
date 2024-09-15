@@ -21,12 +21,12 @@ public class WarehouseController {
         model.addAttribute("warehouses", warehouseDtos);
         return "mainpage";
     }
-//    @GetMapping("compare")
-//    public String compare(Model model) {
-//        List<IWarehouseDto> warehouseDtos = stockNoteService.getAllWarehouse();
-//        model.addAttribute("warehouses", warehouseDtos);
-//        return "compare";
-//    }
+    @GetMapping("compare")
+    public String compare(Model model) {
+        List<IWarehouseDto> warehouseDtos = outboundService.getAllWarehouse();
+        model.addAttribute("warehouses", warehouseDtos);
+        return "compare";
+    }
 //    @GetMapping("stock")
 //    public String getFormCreateStock(
 //            @RequestParam(

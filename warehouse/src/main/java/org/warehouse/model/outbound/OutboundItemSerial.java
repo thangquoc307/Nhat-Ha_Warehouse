@@ -21,18 +21,4 @@ public class OutboundItemSerial implements Serializable {
     @ManyToOne
     @JoinColumn(name = "outboundItemId", referencedColumnName = "id")
     private OutboundItem outboundItem;
-    @Column(columnDefinition = "bit(1) default 0")
-    private Boolean isDelete;
-
-    public OutboundItemSerial(String serial, OutboundItem outboundItem) {
-        this.serial = serial;
-        this.outboundItem = outboundItem;
-        this.isDelete = false;
-    }
-
-    public OutboundItemSerial(Integer id, String serial, Boolean isDelete) {
-        this.id = id;
-        this.serial = serial;
-        this.isDelete = isDelete;
-    }
 }

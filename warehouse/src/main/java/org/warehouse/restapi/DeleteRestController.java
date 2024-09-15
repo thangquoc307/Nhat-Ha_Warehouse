@@ -22,10 +22,10 @@ public class DeleteRestController {
             case "warehouse" -> deleteService.deleteWarehouse(id);
             case "outbound" -> deleteService.deleteOutbound(id);
             case "inbound" -> deleteService.deleteInbound(id);
-            case "outboundItem" -> deleteService.deleteOutboundItem(id);
-            case "inboundItem" -> deleteService.deleteInboundItem(id);
-            case "outboundSerial" -> deleteService.deleteOutboundSerial(id);
-            case "inboundSerial" -> deleteService.deleteInboundSerial(id);
+            case "outbound-item" -> deleteService.deleteOutboundItem(id);
+            case "inbound-item" -> deleteService.deleteInboundItem(id);
+            case "outbound-serial" -> deleteService.deleteOutboundSerial(id);
+            case "inbound-serial" -> deleteService.deleteInboundSerial(id);
             case "saler" -> deleteService.deleteSaler(id);
             case "manufacturer" -> deleteService.deleteManufacturer(id);
         }

@@ -19,8 +19,6 @@ public class InboundItemSerial implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String serial;
-    @Column(columnDefinition = "bit(1) default 0")
-    private Boolean isDelete;
 
     @ManyToOne
     @JoinColumn(name = "inboundItemId", referencedColumnName = "id")

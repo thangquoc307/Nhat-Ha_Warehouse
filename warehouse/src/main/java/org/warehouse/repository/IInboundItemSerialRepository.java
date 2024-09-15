@@ -11,10 +11,6 @@ import org.warehouse.model.inbound.InboundItemSerial;
 import java.util.List;
 
 public interface IInboundItemSerialRepository extends JpaRepository<InboundItemSerial, Integer> {
-    @Transactional
-    @Modifying
-    @Query(value = "update InboundItemSerial i set i.isDelete = true where i.id = :id")
-    void deleteInboundSerial(@Param("id") Integer id);
     @Query(nativeQuery = true, value = "select " +
             "s.id, s.serial from inbound_items_serials s " +
             "join inbound_items i on i.id = s.inbound_item_id " +

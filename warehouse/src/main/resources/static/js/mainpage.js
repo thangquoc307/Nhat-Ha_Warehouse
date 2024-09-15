@@ -113,7 +113,7 @@ let pageableLoad = (page) => {
                                     + `<span class="material-symbols-outlined" onclick='uploadPdf(${cur.id})'>upload_file</span>`
                                     + (cur.image == null
                                             ? `<span class="material-symbols-outlined disable-button">image</span>`
-                                            : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id})">image</span>`
+                                            : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id}, true)">image</span>`
                                     ) + "</div></td>" : ""}
                                 ${isNewStock ? "<td class='table-note text-ellipsis' title='" + cur.note
                                     + "' rowspan='" + countId + "'>" + cur.note + "</td>" : ""}
@@ -250,7 +250,7 @@ let pageableLoad = (page) => {
                                     + `<span class="material-symbols-outlined" onclick='uploadPdf(${cur.id})'>upload_file</span>`
                                     + (cur.image == null
                                             ? `<span class="material-symbols-outlined disable-button">image</span>`
-                                            : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id})">image</span>`
+                                            : `<span class="material-symbols-outlined" onclick="showPdf(${cur.id}, false)">image</span>`
                                     ) + "</div></td>" : ""}
                                 ${isNewStock ? "<td class='table-note text-ellipsis' title='" + cur.note
                                     + "' rowspan='" + countId + "'>" + cur.note + "</td>" : ""}
@@ -532,10 +532,10 @@ let uploadPdf = async (id) => {
         }
     });
 }
-let showPdf = (id) => {
+let showPdf = (id, inbound) => {
     $(function () {
         $.ajax({
-            url: `${urlApi}warehouse/pdf/${id}?isInbound=${isInbound}`,
+            url: `${urlApi}warehouse/pdf/${id}?isInbound=${inbound}`,
             type: 'GET',
             xhrFields: {
                 responseType: 'blob'

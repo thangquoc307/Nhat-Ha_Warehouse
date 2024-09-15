@@ -64,14 +64,14 @@ public class DeleteService implements IDeleteService {
     public void deleteOutboundSerial(Integer serialId) {
         Boolean exist = outboundItemSerialRepository.existsById(serialId);
         if (exist) {
-            outboundItemSerialRepository.deleteOutboundSerial(serialId);
+            outboundItemSerialRepository.deleteById(serialId);
         }
     }
     @Override
     public void deleteInboundSerial(Integer serialId) {
         Boolean exist = inboundItemSerialRepository.existsById(serialId);
         if (exist) {
-            inboundItemSerialRepository.deleteInboundSerial(serialId);
+            inboundItemSerialRepository.deleteById(serialId);
         }
     }
     @Override

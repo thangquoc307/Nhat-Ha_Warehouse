@@ -32,3 +32,10 @@ let countInArray = (array, item) => {
     array.forEach(value => {if (item == value) count++;})
     return count;
 }
+let reduceText = (text, size) => {
+    if (text.length <= size) {
+        return text;
+    } else {
+        return text.substring(0, size) + "...";
+    }
+}
