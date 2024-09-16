@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.warehouse.dto.CreateInboundDto;
 import org.warehouse.dto.CreateOutboundDto;
 import org.warehouse.dto.IWarehouseDto;
+import org.warehouse.dto.ItemCreateDto;
 import org.warehouse.service.IOutboundService;
 
 import java.util.List;
@@ -103,34 +104,40 @@ public class WarehouseController {
             return "redirect:/publish/home";
         }
     }
-//    @GetMapping("item")
-//    public String getFormCreateItem(
-//            @RequestParam(
-//                    name = "id",
-//                    required = false,
-//                    defaultValue = "0") Integer id,
-//            @RequestParam(
-//                    name = "stock-id") Integer stockId,
-//            Model model) {
-//        ItemCreateDto itemCreateDto;
-//        if (id != 0) {
-//            itemCreateDto = stockNoteService.getItemCreate(id);
-//        } else {
-//            itemCreateDto = new ItemCreateDto(stockId);
-//        }
-//        model.addAttribute("itemCreateDto", itemCreateDto);
-//        return "createItem";
-//    }
-//    @PostMapping("item")
-//    public String createItem (
-//            @ModelAttribute ItemCreateDto itemCreateDto,
-//            BindingResult bindingResult) {
-//        itemCreateDto.validate(itemCreateDto, bindingResult);
-//        if (bindingResult.hasErrors()){
-//            return "createItem";
-//        } else {
-//            stockNoteService.modifyItem(itemCreateDto);
-//            return "redirect:/publish/home";
-//        }
-//    }
+    @GetMapping("item")
+    public String getFormCreateInboundItem(
+            @RequestParam(
+                    name = "id",
+                    required = false,
+                    defaultValue = "0") Integer id,
+            @RequestParam(
+                    name = "stock-id") Integer stockId,
+            @RequestParam(
+                    name = "is-inbound") int isInbound,
+            Model model) {
+        ItemCreateDto itemCreateDto;
+        if (id != 0) {
+            itemCreateDto = outboundService.getItemCreate(id, isInbound == 1);
+        } else {
+            itemCreateDto = new ItemCreateDto(stockId, isInbound);
+        }
+        model.addAttribute("itemCreateDto", itemCreateDto);
+        model.addAttribute(
+                "manufacturers", outboundService.getAllManufacturer());
+        return "createItem";
+    }
+    @PostMapping("item")
+    public String createItem (
+            @ModelAttribute ItemCreateDto itemCreateDto,
+            BindingResult bindingResult, Model model) {
+        itemCreateDto.validate(itemCreateDto, bindingResult);
+        if (bindingResult.hasErrors()){
+            model.addAttribute(
+                    "manufacturers", outboundService.getAllManufacturer());
+            return "createItem";
+        } else {
+            outboundService.modifyItem(itemCreateDto);
+            return "redirect:/publish/home";
+        }
+    }
 }

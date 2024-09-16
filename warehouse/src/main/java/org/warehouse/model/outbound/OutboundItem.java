@@ -47,4 +47,12 @@ public class OutboundItem implements Serializable {
         this.count = count;
         this.outbound = outbound;
     }
+
+    public OutboundItem(String partNumber, String description, Integer count, Outbound outbound, Manufacturer manufacturer) {
+        this.partNumber = partNumber;
+        this.description = description;
+        this.count = count;
+        this.outbound = outbound;
+        this.manufacturer = manufacturer;
+    }
 }

@@ -319,3 +319,8 @@ body {
     border: var(--border-red);
     border-radius: 50%;
 }
+.inactive {
+    background-color: var(--color-3) !important;
+    color: var(--color-0) !important;
+    pointer-events: none !important;
+}

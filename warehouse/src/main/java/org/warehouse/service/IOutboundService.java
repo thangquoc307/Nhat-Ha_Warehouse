@@ -18,9 +18,8 @@ public interface IOutboundService {
     void modifyInbound(CreateInboundDto createInboundDto);
     CreateOutboundDto getOutboundCreate(Integer id);
     void modifyOutbound(CreateOutboundDto createOutboundDto);
-
-//    OutboundItemCreateDto getItemCreate(Integer id);
-//    void modifyItem(OutboundItemCreateDto itemCreateDto);
+    ItemCreateDto getItemCreate(Integer id, boolean isInbound);
+    void modifyItem(ItemCreateDto itemCreateDto);
     void createPdf(byte[] data, Integer id, Boolean isInbound);
     byte[] getImage(Integer id, Boolean isInbound);
 }

@@ -20,9 +20,11 @@
       class="container">
     <div class="color0 borderradius p-4 mt-3
         boxshadow-outset pb-5">
-        <h3>Item</h3>
+        <h3 th:text="${itemCreateDto.getIsInbound() == 1 ? 'Inbound Item' : 'Outbound Item'}"></h3>
         <input th:field="*{id}" hidden="hidden">
-        <input th:field="*{stockNoteId}" hidden="hidden">
+        <input th:field="*{isInbound}" hidden="hidden">
+        <input th:field="*{stockId}" hidden="hidden">
+
         <div class="mt-3">
             <label class="form-label alert-require"
                    for="partNumber">Part Number</label>
@@ -33,6 +35,21 @@
             <p class="text-danger"
                th:if="${#fields.hasErrors('partNumber')}"
                th:errors="*{partNumber}"></p>
+        </div>
+        <div class="mt-3">
+            <label class="form-label alert-require"
+                   for="manufacturerId">Manufacturer</label>
+            <select class="form-select" th:field="*{manufacturerId}"
+                    id="manufacturerId">
+                <option value="0">-- select manufacturer --</option>
+                <option
+                        th:each="mn : ${manufacturers}"
+                        th:value="${mn.getId()}"
+                        th:text="${mn.getName()}"></option>
+            </select>
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('manufacturerId')}"
+               th:errors="*{manufacturerId}"></p>
         </div>
         <div class="mt-3 mb-3">
             <label class="form-label"

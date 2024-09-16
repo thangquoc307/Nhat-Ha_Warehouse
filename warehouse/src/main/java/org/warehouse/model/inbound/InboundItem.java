@@ -36,7 +36,12 @@ public class InboundItem implements Serializable {
     @JoinColumn(name = "manufacturerId", referencedColumnName = "id")
     private Manufacturer manufacturer;
 
-    public InboundItem(Integer id) {
-        this.id = id;
+    public InboundItem(String partNumber, String description, Integer count, Inbound inbound, Manufacturer manufacturer) {
+        this.partNumber = partNumber;
+        this.description = description;
+        this.count = count;
+        this.inbound = inbound;
+        this.manufacturer = manufacturer;
     }
+
 }

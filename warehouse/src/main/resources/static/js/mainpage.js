@@ -344,6 +344,8 @@ let showDetail = (choosedId, name) => {
             }
         }
         isInboundSerial = isInbound;
+
+        activeButton();
         $("#start-button-" + choosedId).addClass("active-icon");
         $.ajax({
             type: "GET",
@@ -391,6 +393,7 @@ let resetDetail = () => {
         $("#line-detail").html(`<img src="/alert_image/204.svg">`);
         outboundChoosedId = 0;
         outboundChoosedName = "";
+        inactiveButton();
     })
 }
 let searchingData = () => {
@@ -503,10 +506,10 @@ let gotoModifyStock = (isCreate) => {
 }
 let gotoModifyItem = (editId) => {
     $(function () {
-        if (editId !== 0 && outboundChoosedId !== 0) {
-            gotoLink(`/publish/item?id=${editId}&stock-id=${outboundChoosedId}`);
-        } else if (outboundChoosedId !== 0) {
-            gotoLink(`/publish/item?stock-id=${outboundChoosedId}`);
+        if (editId !== 0 && (outboundChoosedId !== 0 || inboundChoosedId !== 0)) {
+            gotoLink(`/publish/item?is-inbound=${inboundChoosedId !== 0 ? 1 : 0}&id=${editId}&stock-id=${outboundChoosedId}`);
+        } else if (outboundChoosedId !== 0 || inboundChoosedId !== 0) {
+            gotoLink(`/publish/item?is-inbound=${inboundChoosedId !== 0 ? 1 : 0}&stock-id=${outboundChoosedId}`);
         }
     })
 }
@@ -545,6 +548,16 @@ let showPdf = (id, inbound) => {
                 window.open(url, '_blank');
             }
         });
+    })
+}
+let activeButton = () => {
+    $(function () {
+        $("#display-detail-button>div").removeClass("inactive");
+    })
+}
+let inactiveButton = () => {
+    $(function () {
+        $("#display-detail-button>div").addClass("inactive");
     })
 }
 pageableLoad(0);

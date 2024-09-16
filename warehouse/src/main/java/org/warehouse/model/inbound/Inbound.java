@@ -50,4 +50,8 @@ public class Inbound implements Serializable {
         this.warehouse = warehouse;
         this.isDelete = false;
     }
+
+    public Inbound(Integer id) {
+        this.id = id;
+    }
 }

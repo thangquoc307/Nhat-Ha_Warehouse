@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 import org.warehouse.dto.CompareDto;
+import org.warehouse.dto.ItemCreateDto;
 import org.warehouse.dto.TransferCompareDto;
 import org.warehouse.model.outbound.OutboundItem;
 
@@ -17,10 +18,15 @@ public interface IOutboundItemRepository extends JpaRepository<OutboundItem, Int
     @Modifying
     @Query(value = "update OutboundItem i set i.count = :count where i.id = :id")
     void editCount(@Param("id") Integer id, @Param("count") Integer count);
-//    @Query(value = "select new org.warehouse.dto.ItemCreateDto(" +
-//            "i.id, i.partNumber, i.description, i.count, i.stockNote.id) " +
-//            "from OutboundItem i where i.isDelete = false and i.id = :id")
-//    ItemCreateDto getItemForEdit(@Param("id") Integer id);
+    @Query(value = "select new org.warehouse.dto.ItemCreateDto (" +
+            "o.id, o.partNumber, o.description, " +
+            "(case when o.count is null then true else false end), " +
+            "ob.id, m.id, 0 ) " +
+            "from OutboundItem o " +
+            "join o.outbound ob " +
+            "join o.manufacturer m " +
+            "where o.id = :id")
+    ItemCreateDto getItemForEdit(@Param("id") Integer id);
     @Query(value = "select new org.warehouse.dto.TransferCompareDto(" +
             "ob.id, ob.so, o.partNumber, o.description, " +
             "ifnull(o.count, count(os.id)), m.name, " +
@@ -50,4 +56,16 @@ public interface IOutboundItemRepository extends JpaRepository<OutboundItem, Int
     List<Integer> countOutboundItem(
             @Param("partNumber") String partNumber,
             @Param("startDate") LocalDate startEnd);
+    @Transactional
+    @Modifying
+    @Query(value = "update outbound_items o set " +
+            "o.part_number = :partNumber, " +
+            "o.description = :description, " +
+            "o.manufacturer_id = :manufacturerId " +
+            "where o.id = :id", nativeQuery = true)
+    void editItem(
+            @Param("partNumber") String partNumber,
+            @Param("description") String description,
+            @Param("manufacturerId") Integer manufacturerId,
+            @Param("id") Integer id);
 }

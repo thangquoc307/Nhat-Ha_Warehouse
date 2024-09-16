@@ -44,4 +44,8 @@ public class Manufacturer implements Serializable {
         this.name = name;
         this.isDelete = false;
     }
+
+    public Manufacturer(Integer id) {
+        this.id = id;
+    }
 }
