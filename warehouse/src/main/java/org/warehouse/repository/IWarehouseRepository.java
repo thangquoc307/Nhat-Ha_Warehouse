@@ -16,9 +16,9 @@ public interface IWarehouseRepository extends JpaRepository<Warehouse, Integer> 
                     "where is_delete = 0 " +
                     "order by id desc ")
     List<IWarehouseDto> getAllWarehouse();
-//    @Query(value = "select new Warehouse (w.id, w.name, w.isDelete) " +
-//            "from Warehouse w where w.id = :id and w.isDelete = false")
-//    Warehouse findWarehouse(@Param("id") Integer id);
+    @Query(value = "select new Warehouse (w.id, w.name, w.isDelete) " +
+            "from Warehouse w where w.id = :id and w.isDelete = false")
+    Warehouse findWarehouse(@Param("id") Integer id);
     @Transactional
     @Modifying
     @Query(value = "update Warehouse w set w.isDelete = true where w.id = :id")

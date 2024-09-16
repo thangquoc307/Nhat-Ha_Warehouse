@@ -77,7 +77,7 @@ let createSerial = () => {
         if (listSerialInsert.length > 0) {
             $.ajax({
                 type: "POST",
-                url: `${urlApi}data/serial/${itemIdChoosed}`,
+                url: `${urlApi}data/serial/${itemIdChoosed}/${isInboundSerial}`,
                 contentType: "application/json",
                 data: JSON.stringify(listSerialInsert),
                 success: () => {

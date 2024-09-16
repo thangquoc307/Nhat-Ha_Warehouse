@@ -50,14 +50,14 @@ public class DeleteService implements IDeleteService {
     public void deleteOutboundItem(Integer outboundItemId) {
         Boolean exist = outboundItemRepository.existsById(outboundItemId);
         if (exist) {
-            outboundItemRepository.deleteOutboundItem(outboundItemId);
+            outboundItemRepository.deleteById(outboundItemId);
         }
     }
     @Override
     public void deleteInboundItem(Integer inboundItemId) {
         Boolean exist = inboundItemRepository.existsById(inboundItemId);
         if (exist) {
-            inboundItemRepository.deleteInboundItem(inboundItemId);
+            inboundItemRepository.deleteById(inboundItemId);
         }
     }
     @Override

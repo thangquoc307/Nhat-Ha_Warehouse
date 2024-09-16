@@ -14,7 +14,7 @@ public interface IOutboundItemSerialRepository extends JpaRepository<OutboundIte
     @Query(nativeQuery = true, value = "select " +
             "s.id, s.serial from outbound_items_serials s " +
             "join outbound_items i on i.id = s.outbound_item_id " +
-            "where i.is_delete = 0 and s.is_delete = 0 and s.outbound_item_id = :itemId")
+            "where s.outbound_item_id = :itemId")
     List<IItemSerialDto> getItemSerial(@Param("itemId") Integer itemId);
 //    @Query(nativeQuery = true, value = "select sn.id as stockNoteId, sn.image, " +
 //            "ifnull(i.count, count(s.id)) countData, " +
@@ -34,11 +34,8 @@ public interface IOutboundItemSerialRepository extends JpaRepository<OutboundIte
 //            @Param("warehouseId") Integer warehouseId,
 //            @Param("startdate")LocalDate startDate,
 //            @Param("enddate")LocalDate endDate);
-//    @Query(value = "select new OutboundItemSerial (i.id, i.serial, i.isDelete) " +
-//            "from OutboundItemSerial i where i.id = :id and i.isDelete = false ")
-//    OutboundItemSerial findSerial(@Param("id") Integer id);
-//    @Modifying
-//    @Transactional
-//    @Query(value = "update OutboundItemSerial i set i.serial = :serial where i.id = :id")
-//    void updateSerial(@Param("serial") String serial, @Param("id") Integer id);
+    @Modifying
+    @Transactional
+    @Query(value = "update OutboundItemSerial i set i.serial = :serial where i.id = :id")
+    void updateSerial(@Param("serial") String serial, @Param("id") Integer id);
 }

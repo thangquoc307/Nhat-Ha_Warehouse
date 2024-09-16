@@ -18,9 +18,9 @@ public interface IManufactuterRepository extends JpaRepository<Manufacturer, Int
                     "where m.is_delete = 0 " +
                     "order by id desc ")
     List<IManufacturerDto> getAllManufacturer();
-//    @Query(value = "select new Manufacturer (m.id, m.name, m.isDelete) " +
-//            "from Manufacturer m where m.id = :id and m.isDelete = false ")
-//    Manufacturer findManufacturer(@Param("id") Integer id);
+    @Query(value = "select new Manufacturer (m.id, m.name, m.isDelete) " +
+            "from Manufacturer m where m.id = :id and m.isDelete = false ")
+    Manufacturer findManufacturer(@Param("id") Integer id);
     @Transactional
     @Modifying
     @Query(value = "update Manufacturer m set m.isDelete = true where m.id = :id")

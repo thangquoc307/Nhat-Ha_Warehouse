@@ -8,6 +8,7 @@ let outboundChoosedName = "";
 let inboundChoosedName = "";
 let listSerial = [];
 let idSerialEdited = 0;
+let isInboundSerial = false;
 class SerialItem {
     id;
     name;
@@ -342,7 +343,7 @@ let showDetail = (choosedId, name) => {
                 name = outboundChoosedName;
             }
         }
-
+        isInboundSerial = isInbound;
         $("#start-button-" + choosedId).addClass("active-icon");
         $.ajax({
             type: "GET",
@@ -425,12 +426,11 @@ let closeEditSerial = (id) => {
 let sendEditSerial = (id) => {
     $(function () {
         let value = $(`#edit-serial-${id} input`).val();
-        let data = new DataEdit(id, value);
         $.ajax({
             type: "PUT",
             url: `${urlApi}data/serial`,
             contentType: "application/json",
-            data: JSON.stringify(data),
+            data: JSON.stringify({id: id, name: value, isInbound: isInboundSerial}),
             success: () => {
                 showDetail(outboundChoosedId, outboundChoosedName);
             }
@@ -481,7 +481,7 @@ let sendEditCount = () => {
                 type: "POST",
                 url: `${urlApi}data/count`,
                 contentType: "application/json",
-                data: JSON.stringify({id: id, count: value}),
+                data: JSON.stringify({id: id, count: value, isInbound: isInboundSerial}),
                 success: () => {
                     closeEditCount();
                     pageableLoad(pagePageable);
@@ -494,18 +494,18 @@ let sendEditCount = () => {
 let gotoModifyStock = (isCreate) => {
     $(function () {
         let warehouseId = $("#warehouse-select").val();
-        if (outboundChoosedId != 0 && !isCreate) {
-            gotoLink(`/publish/stock?id=${outboundChoosedId}&warehouse-id=${warehouseId}`);
+        if ((outboundChoosedId !== 0 || inboundChoosedId !== 0) && !isCreate) {
+            gotoLink(`/publish/${isInbound ? "inbound" : "outbound"}?id=${isInbound ? inboundChoosedId : outboundChoosedId}&warehouse-id=${warehouseId}`);
         } else if (isCreate) {
-            gotoLink(`/publish/stock?warehouse-id=${warehouseId}`);
+            gotoLink(`/publish/${isInbound ? "inbound" : "outbound"}?warehouse-id=${warehouseId}`);
         }
     })
 }
 let gotoModifyItem = (editId) => {
     $(function () {
-        if (editId != 0 && outboundChoosedId != 0) {
+        if (editId !== 0 && outboundChoosedId !== 0) {
             gotoLink(`/publish/item?id=${editId}&stock-id=${outboundChoosedId}`);
-        } else if (outboundChoosedId != 0) {
+        } else if (outboundChoosedId !== 0) {
             gotoLink(`/publish/item?stock-id=${outboundChoosedId}`);
         }
     })

@@ -56,6 +56,16 @@ public class Outbound implements Serializable {
         this.isDelete = false;
     }
 
+    public Outbound(LocalDate releaseDate, String so, String partner, String note, Saler saler, Warehouse warehouse) {
+        this.releaseDate = releaseDate;
+        this.so = so;
+        this.partner = partner;
+        this.note = note;
+        this.saler = saler;
+        this.warehouse = warehouse;
+        this.isDelete = false;
+    }
+
     public Outbound(Integer id) {
         this.id = id;
     }

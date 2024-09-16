@@ -39,4 +39,9 @@ public class Manufacturer implements Serializable {
         this.name = name;
         this.isDelete = isDelete;
     }
+
+    public Manufacturer(String name) {
+        this.name = name;
+        this.isDelete = false;
+    }
 }

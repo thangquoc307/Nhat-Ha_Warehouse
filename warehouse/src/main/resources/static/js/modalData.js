@@ -18,6 +18,12 @@ let showDeleteModal = (id, name, modeStt) => {
     if (modeStt == mode.OUTBOUND) {
         name = outboundChoosedName;
         id = outboundChoosedId;
+    } else if (modeStt == mode.INBOUND) {
+        name = inboundChoosedName;
+        id = inboundChoosedName;
+    }
+    if (id == 0) {
+        return;
     }
     $(function () {
         closePopup();

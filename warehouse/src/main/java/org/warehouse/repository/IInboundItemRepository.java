@@ -14,21 +14,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IInboundItemRepository extends JpaRepository<InboundItem, Integer> {
-//    @Query(value = "select new OutboundItem (i.id) from OutboundItem i " +
-//            "where i.isDelete = false and i.id = :id")
-//    OutboundItem getItemById(@Param("id") Integer id);
-//    @Transactional
-//    @Modifying
-//    @Query(value = "update OutboundItem i set i.count = :count where i.id = :id")
-//    void editCount(@Param("id") Integer id, @Param("count") Integer count);
+    @Transactional
+    @Modifying
+    @Query(value = "update OutboundItem i set i.count = :count where i.id = :id")
+    void editCount(@Param("id") Integer id, @Param("count") Integer count);
 //    @Query(value = "select new org.warehouse.dto.ItemCreateDto(" +
 //            "i.id, i.partNumber, i.description, i.count, i.stockNote.id) " +
 //            "from OutboundItem i where i.isDelete = false and i.id = :id")
 //    ItemCreateDto getItemForEdit(@Param("id") Integer id);
-    @Transactional
-    @Modifying
-    @Query(value = "update InboundItem i set i.isDelete = true where i.id = :id")
-    void deleteInboundItem(@Param("id") Integer id);
     @Query(value = "select new org.warehouse.dto.TransferCompareDto(" +
             "ib.id, ib.inboundCode, i.partNumber, i.description, " +
             "ifnull(i.count, count(ii.id)), m.name, " +
@@ -40,7 +33,6 @@ public interface IInboundItemRepository extends JpaRepository<InboundItem, Integ
             "left join i.manufacturer m " +
             "where (:startDate is null  or :startDate <= ib.releaseDate) " +
             "and (:endDate is null or :endDate >= ib.releaseDate) " +
-            "and i.isDelete = false " +
             "and ib.isDelete = false " +
             "and ib.warehouse.id = :warehouseId " +
             "group by i.id, ib.id, ib.inboundCode, i.partNumber, " +
@@ -54,7 +46,6 @@ public interface IInboundItemRepository extends JpaRepository<InboundItem, Integ
             "left join i.inboundItemSerials ii " +
             "join i.inbound ib " +
             "where i.partNumber = :partNumber " +
-            "and i.isDelete = false " +
             "and ib.releaseDate < :startDate " +
             "group by i.id")
     List<Integer> countInboundItem(

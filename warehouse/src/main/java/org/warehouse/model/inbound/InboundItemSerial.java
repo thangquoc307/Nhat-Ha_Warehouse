@@ -23,4 +23,9 @@ public class InboundItemSerial implements Serializable {
     @ManyToOne
     @JoinColumn(name = "inboundItemId", referencedColumnName = "id")
     private InboundItem inboundItem;
+
+    public InboundItemSerial(String serial, InboundItem inboundItem) {
+        this.serial = serial;
+        this.inboundItem = inboundItem;
+    }
 }

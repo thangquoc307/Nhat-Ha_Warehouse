@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
+import org.warehouse.dto.CreateOutboundDto;
 import org.warehouse.dto.IOutboundItemShowDto;
 import org.warehouse.dto.ItemDetailDto;
 import org.warehouse.model.outbound.Outbound;
@@ -33,7 +34,6 @@ public interface IOutboundRepository extends JpaRepository<Outbound, Integer> {
             "and (isnull(:endDate) or o.release_date <= :endDate) " +
             "and o.warehouse_id = :warehouseId " +
             "and o.is_delete = 0 " +
-            "and (isnull(i.is_delete) or i.is_delete = 0) " +
             "group by i.id, o.release_date, o.so, o.id " +
             "order by o.release_date desc, o.so;",
             countQuery = "select count(*) from (" +
@@ -53,7 +53,6 @@ public interface IOutboundRepository extends JpaRepository<Outbound, Integer> {
                     "and (isnull(:endDate) or o.release_date <= :endDate) " +
                     "and o.warehouse_id = :warehouseId " +
                     "and o.is_delete = 0 " +
-                    "and (isnull(i.is_delete) or i.is_delete = 0) " +
                     "group by i.id, o.release_date, o.so, o.id) as TB")
     Page<IOutboundItemShowDto> getItemDto(
             @Param("searchKey") String searchKey,
@@ -67,16 +66,35 @@ public interface IOutboundRepository extends JpaRepository<Outbound, Integer> {
             "from OutboundItem i " +
             "left join i.manufacturer m " +
             "where i.outbound.isDelete = false " +
-            "and i.isDelete = false " +
             "and i.outbound.id = :stockId")
     List<ItemDetailDto> getAllItemByStock(@Param("stockId") Integer stockId);
     @Transactional
     @Modifying
     @Query(value = "update Outbound o set o.isDelete = true where o.id = :id")
     void deleteOutbound(@Param("id") Integer id);
-//    @Query(value = "select new org.warehouse.dto.StockCreateDto(" +
-//            "s.id, s.releaseDate, s.so, s.partner, s.note, s.saler.id, s.warehouse.id) " +
-//            "from Outbound s where s.id = :id and s.isDelete = false ")
-//    StockCreateDto getStockNoteForEdit(@Param("id") Integer id);
-
+    @Query(value = "select new org.warehouse.dto.CreateOutboundDto(" +
+            "s.id, s.so, s.releaseDate, s.partner, s.note, sl.id, w.id) " +
+            "from Outbound s " +
+            "left join s.warehouse w " +
+            "left join s.saler sl " +
+            "where s.id = :id and s.isDelete = false ")
+    CreateOutboundDto getOutboundEdit(@Param("id") Integer id);
+    @Transactional
+    @Modifying
+    @Query(value = "update outbounds o set " +
+            "o.so = :so, " +
+            "o.release_date = :release, " +
+            "o.partner = :partner, " +
+            "o.note = :note, " +
+            "o.sale_id = :salerId, " +
+            "o.warehouse_id = :warehouseId " +
+            "where o.id = :id", nativeQuery = true)
+    void editOutbound(
+            @Param("so") String so,
+            @Param("release") LocalDate release,
+            @Param("partner") String partner,
+            @Param("note") String note,
+            @Param("salerId") Integer salerId,
+            @Param("warehouseId") Integer warehouseId,
+            @Param("id") Integer id);
 }

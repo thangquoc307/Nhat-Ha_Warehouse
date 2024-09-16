@@ -14,8 +14,11 @@ public interface IOutboundService {
     List<IManufacturerDto> getAllManufacturer();
     List<ItemDetailDto> getOutbound(Integer outboundId);
     List<ItemDetailDto> getInbound(Integer inboundId);
-//    OutboundCreateDto getStockCreate(Integer id);
-//    void modifyStock(OutboundCreateDto stockCreateDto);
+    CreateInboundDto getInboundCreate(Integer id);
+    void modifyInbound(CreateInboundDto createInboundDto);
+    CreateOutboundDto getOutboundCreate(Integer id);
+    void modifyOutbound(CreateOutboundDto createOutboundDto);
+
 //    OutboundItemCreateDto getItemCreate(Integer id);
 //    void modifyItem(OutboundItemCreateDto itemCreateDto);
     void createPdf(byte[] data, Integer id, Boolean isInbound);

@@ -3,8 +3,10 @@ package org.warehouse.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.warehouse.dto.CreateInboundDto;
+import org.warehouse.dto.CreateOutboundDto;
 import org.warehouse.dto.IWarehouseDto;
 import org.warehouse.service.IOutboundService;
 
@@ -27,45 +29,80 @@ public class WarehouseController {
         model.addAttribute("warehouses", warehouseDtos);
         return "compare";
     }
-//    @GetMapping("stock")
-//    public String getFormCreateStock(
-//            @RequestParam(
-//                    name = "id",
-//                    required = false,
-//                    defaultValue = "0") Integer id,
-//            @RequestParam(
-//                    name = "warehouse-id") Integer warehouseId,
-//            Model model) {
-//        model.addAttribute("warehouses",
-//                stockNoteService.getAllWarehouse());
-//        model.addAttribute("salers",
-//                stockNoteService.getAllSaler());
-//        StockCreateDto stockCreateDto;
-//        if (id != 0) {
-//            stockCreateDto = stockNoteService.getStockCreate(id);
-//        } else {
-//            stockCreateDto = new StockCreateDto(warehouseId);
-//        }
-//        model.addAttribute("stockCreateDto", stockCreateDto);
-//        return "createStock";
-//    }
-//    @PostMapping("stock")
-//    public String createStock(
-//            @ModelAttribute StockCreateDto stockCreateDto,
-//            Model model,
-//            BindingResult bindingResult) {
-//        stockCreateDto.validate(stockCreateDto, bindingResult);
-//        if (bindingResult.hasErrors()){
-//            model.addAttribute("warehouses",
-//                    stockNoteService.getAllWarehouse());
-//            model.addAttribute("salers",
-//                    stockNoteService.getAllSaler());
-//            return "createStock";
-//        } else {
-//            stockNoteService.modifyStock(stockCreateDto);
-//            return "redirect:/publish/home";
-//        }
-//    }
+    @GetMapping("inbound")
+    public String getFormCreateInbound(
+            @RequestParam(
+                    name = "id",
+                    required = false,
+                    defaultValue = "0") Integer id,
+            @RequestParam(
+                    name = "warehouse-id") Integer warehouseId,
+            Model model) {
+        model.addAttribute("warehouses",
+                outboundService.getAllWarehouse());
+        CreateInboundDto createInboundDto;
+        if (id != 0) {
+            createInboundDto = outboundService.getInboundCreate(id);
+        } else {
+            createInboundDto = new CreateInboundDto(warehouseId);
+        }
+        model.addAttribute("createInboundDto", createInboundDto);
+        return "createInbound";
+    }
+    @GetMapping("outbound")
+    public String getFormCreateOutbound(
+            @RequestParam(
+                    name = "id",
+                    required = false,
+                    defaultValue = "0") Integer id,
+            @RequestParam(
+                    name = "warehouse-id") Integer warehouseId,
+            Model model) {
+        model.addAttribute("warehouses",
+                outboundService.getAllWarehouse());
+        model.addAttribute("salers",
+                outboundService.getAllSaler());
+        CreateOutboundDto createOutboundDto;
+        if (id != 0) {
+            createOutboundDto = outboundService.getOutboundCreate(id);
+        } else {
+            createOutboundDto = new CreateOutboundDto(warehouseId);
+        }
+        model.addAttribute("createOutboundDto", createOutboundDto);
+        return "createOutbound";
+    }
+    @PostMapping("inbound")
+    public String createInbound(
+            @ModelAttribute CreateInboundDto createInboundDto,
+            Model model,
+            BindingResult bindingResult) {
+        createInboundDto.validate(createInboundDto, bindingResult);
+        if (bindingResult.hasErrors()){
+            model.addAttribute("warehouses",
+                    outboundService.getAllWarehouse());
+            return "createInbound";
+        } else {
+            outboundService.modifyInbound(createInboundDto);
+            return "redirect:/publish/home";
+        }
+    }
+    @PostMapping("outbound")
+    public String createOutbound(
+            @ModelAttribute CreateOutboundDto createOutboundDto,
+            Model model,
+            BindingResult bindingResult) {
+        createOutboundDto.validate(createOutboundDto, bindingResult);
+        if (bindingResult.hasErrors()){
+            model.addAttribute("warehouses",
+                    outboundService.getAllWarehouse());
+            model.addAttribute("salers",
+                    outboundService.getAllSaler());
+            return "createOutbound";
+        } else {
+            outboundService.modifyOutbound(createOutboundDto);
+            return "redirect:/publish/home";
+        }
+    }
 //    @GetMapping("item")
 //    public String getFormCreateItem(
 //            @RequestParam(

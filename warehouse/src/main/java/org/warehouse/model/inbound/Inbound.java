@@ -41,4 +41,13 @@ public class Inbound implements Serializable {
     @OneToMany(mappedBy = "inbound")
     @JsonBackReference
     private List<InboundItem> inboundItems;
+
+    public Inbound(String inboundCode, LocalDate releaseDate, String locationFrom, String note, Warehouse warehouse) {
+        this.inboundCode = inboundCode;
+        this.releaseDate = releaseDate;
+        this.locationFrom = locationFrom;
+        this.note = note;
+        this.warehouse = warehouse;
+        this.isDelete = false;
+    }
 }

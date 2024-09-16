@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.warehouse.dto.*;
+import org.warehouse.model.Saler;
+import org.warehouse.model.Warehouse;
 import org.warehouse.model.inbound.Inbound;
 import org.warehouse.model.outbound.Outbound;
 import org.warehouse.repository.*;
@@ -30,8 +32,6 @@ public class OutboundService implements IOutboundService {
     private ISalerRepository salerRepository;
     @Autowired
     private IManufactuterRepository manufactuterRepository;
-//    @Autowired
-//    private IItemRepository itemRepository;
     @Override
     public Page<IOutboundItemShowDto> getOutboundForShow(
             String search, LocalDate startDate, LocalDate endDate,
@@ -96,6 +96,63 @@ public class OutboundService implements IOutboundService {
             }
         });
         return itemDetailDtos;
+    }
+
+    @Override
+    public CreateInboundDto getInboundCreate(Integer id) {
+        return inboundRepository.getInboundEdit(id);
+    }
+
+    @Override
+    public void modifyInbound(CreateInboundDto createInboundDto) {
+        if (createInboundDto.getId() != null) {
+            inboundRepository.editInbound(
+                    createInboundDto.getInboundCode(),
+                    createInboundDto.getReleaseDate(),
+                    createInboundDto.getLocationFrom(),
+                    createInboundDto.getNote(),
+                    createInboundDto.getWarehouseId(),
+                    createInboundDto.getId()
+            );
+        } else {
+            inboundRepository.save(new Inbound(
+                    createInboundDto.getInboundCode(),
+                    createInboundDto.getReleaseDate(),
+                    createInboundDto.getLocationFrom(),
+                    createInboundDto.getNote(),
+                    new Warehouse(createInboundDto.getWarehouseId())
+            ));
+        }
+    }
+
+    @Override
+    public CreateOutboundDto getOutboundCreate(Integer id) {
+        return outboundRepository.getOutboundEdit(id);
+    }
+
+    @Override
+    public void modifyOutbound(CreateOutboundDto createOutboundDto) {
+        Integer salerId = createOutboundDto.getSalerId() == 0 ? null : createOutboundDto.getSalerId();
+        if (createOutboundDto.getId() != null) {
+            outboundRepository.editOutbound(
+                    createOutboundDto.getSo(),
+                    createOutboundDto.getReleaseDate(),
+                    createOutboundDto.getPartner(),
+                    createOutboundDto.getNote(),
+                    salerId,
+                    createOutboundDto.getWarehouseId(),
+                    createOutboundDto.getId());
+        } else {
+            outboundRepository.save(new Outbound(
+                    createOutboundDto.getReleaseDate(),
+                    createOutboundDto.getSo(),
+                    createOutboundDto.getPartner(),
+                    createOutboundDto.getNote(),
+                    createOutboundDto.getSalerId() == 0
+                            ? null : new Saler(createOutboundDto.getSalerId()),
+                    new Warehouse(createOutboundDto.getWarehouseId())
+            ));
+        }
     }
 
 //    @Override

@@ -25,10 +25,8 @@ public class OutboundItem implements Serializable {
     @Column(length = 1000)
     private String description;
     private Integer count;
-    @Column(columnDefinition = "bit(1) default 0")
-    private Boolean isDelete;
 
-    @OneToMany(mappedBy = "outboundItem")
+    @OneToMany(mappedBy = "outboundItem", orphanRemoval = true)
     @JsonBackReference
     private List<OutboundItemSerial> outboundItemSerials;
     @ManyToOne
@@ -48,6 +46,5 @@ public class OutboundItem implements Serializable {
         this.description = description;
         this.count = count;
         this.outbound = outbound;
-        this.isDelete = false;
     }
 }

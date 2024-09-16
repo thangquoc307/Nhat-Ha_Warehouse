@@ -25,10 +25,8 @@ public class InboundItem implements Serializable {
     @Column(length = 1000)
     private String description;
     private Integer count;
-    @Column(columnDefinition = "bit(1) default 0")
-    private Boolean isDelete;
 
-    @OneToMany(mappedBy = "inboundItem")
+    @OneToMany(mappedBy = "inboundItem", orphanRemoval = true)
     @JsonBackReference
     private List<InboundItemSerial> inboundItemSerials;
     @ManyToOne
@@ -37,4 +35,8 @@ public class InboundItem implements Serializable {
     @ManyToOne
     @JoinColumn(name = "manufacturerId", referencedColumnName = "id")
     private Manufacturer manufacturer;
+
+    public InboundItem(Integer id) {
+        this.id = id;
+    }
 }

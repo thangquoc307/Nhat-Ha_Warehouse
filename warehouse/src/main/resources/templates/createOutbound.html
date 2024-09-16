@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create Stock Note</title>
+    <title>Create Outbound</title>
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/bootstrap/bootstrap.css">
     <link rel="stylesheet" href="/css/modalStyle.css">
@@ -14,9 +14,9 @@
 </head>
 <body class="color3 scroll-custom">
 <div th:replace="template::header"></div>
-<form th:action="${'/publish/stock'}"
+<form th:action="${'/publish/outbound'}"
       method="post"
-      th:object="${stockCreateDto}"
+      th:object="${createOutboundDto}"
       class="container">
     <div class="color0 borderradius p-4 mt-3
         boxshadow-outset pb-5">
@@ -33,10 +33,24 @@
                         th:value="${wh.getid()}"
                         th:text="${wh.getName()}"></option>
             </select>
-
             <p class="text-danger"
                th:if="${#fields.hasErrors('warehouseId')}"
                th:errors="*{warehouseId}"></p>
+        </div>
+        <div class="mt-3">
+            <label class="form-label"
+                   for="salerId">Saler</label>
+            <select class="form-select" th:field="*{salerId}"
+                    id="salerId">
+                <option value="0">-- select saler --</option>
+                <option
+                        th:each="sa : ${salers}"
+                        th:value="${sa.getId()}"
+                        th:text="${sa.getName()}"></option>
+            </select>
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('salerId')}"
+               th:errors="*{salerId}"></p>
         </div>
         <div class="mt-3">
             <label class="form-label alert-require"
@@ -49,11 +63,11 @@
                th:errors="*{releaseDate}"></p>
         </div>
         <div class="mt-3">
-            <label class="form-label"
-                   for="so">SO</label>
+            <label class="form-label alert-require"
+                   for="so">S.O</label>
             <input type="text" id="so"
                    class="form-control form-text"
-                   placeholder="SO"
+                   placeholder="so"
                    th:field="*{so}">
             <p class="text-danger"
                th:if="${#fields.hasErrors('so')}"
@@ -61,8 +75,8 @@
         </div>
         <div class="mt-3">
             <label class="form-label"
-                   for="partner">Partner</label>
-            <input type="text" id="partner"
+                   for="locationFrom">Partner</label>
+            <input type="text" id="locationFrom"
                    class="form-control form-text"
                    placeholder="Partner"
                    th:field="*{partner}">
@@ -79,21 +93,6 @@
             <p class="text-danger"
                th:if="${#fields.hasErrors('note')}"
                th:errors="*{note}"></p>
-        </div>
-        <div class="mt-3">
-            <label class="form-label"
-                   for="salerId">Saler</label>
-            <select class="form-select" th:field="*{salerId}"
-                    id="salerId">
-                <option value="0">-- select saler --</option>
-                <option
-                        th:each="sl : ${salers}"
-                        th:value="${sl.getId()}"
-                        th:text="${sl.getName()}"></option>
-            </select>
-            <p class="text-danger"
-               th:if="${#fields.hasErrors('salerId')}"
-               th:errors="*{salerId}"></p>
         </div>
         <div class="button-form mt-4">
             <button type="reset">

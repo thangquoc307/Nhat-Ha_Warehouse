@@ -16,9 +16,9 @@ public interface ISalerRepository extends JpaRepository<Saler, Integer> {
                     "where s.is_delete = 0 " +
                     "order by id desc ")
     List<ISalerDto> getAllSaler();
-//    @Query(value = "select new Saler (s.id, s.name, s.isDelete) " +
-//            "from Saler s where s.id = :id and s.isDelete = false ")
-//    Saler findSaler(@Param("id") Integer id);
+    @Query(value = "select new Saler (s.id, s.name, s.isDelete) " +
+            "from Saler s where s.id = :id and s.isDelete = false ")
+    Saler findSaler(@Param("id") Integer id);
     @Transactional
     @Modifying
     @Query(value = "update Saler s set s.isDelete = true where s.id = :id")

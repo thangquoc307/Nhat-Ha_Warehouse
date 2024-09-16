@@ -13,21 +13,14 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface IOutboundItemRepository extends JpaRepository<OutboundItem, Integer> {
-//    @Query(value = "select new OutboundItem (i.id) from OutboundItem i " +
-//            "where i.isDelete = false and i.id = :id")
-//    OutboundItem getItemById(@Param("id") Integer id);
-//    @Transactional
-//    @Modifying
-//    @Query(value = "update OutboundItem i set i.count = :count where i.id = :id")
-//    void editCount(@Param("id") Integer id, @Param("count") Integer count);
+    @Transactional
+    @Modifying
+    @Query(value = "update OutboundItem i set i.count = :count where i.id = :id")
+    void editCount(@Param("id") Integer id, @Param("count") Integer count);
 //    @Query(value = "select new org.warehouse.dto.ItemCreateDto(" +
 //            "i.id, i.partNumber, i.description, i.count, i.stockNote.id) " +
 //            "from OutboundItem i where i.isDelete = false and i.id = :id")
 //    ItemCreateDto getItemForEdit(@Param("id") Integer id);
-    @Transactional
-    @Modifying
-    @Query(value = "update OutboundItem o set o.isDelete = true where o.id = :id")
-    void deleteOutboundItem(@Param("id") Integer id);
     @Query(value = "select new org.warehouse.dto.TransferCompareDto(" +
             "ob.id, ob.so, o.partNumber, o.description, " +
             "ifnull(o.count, count(os.id)), m.name, " +
@@ -39,7 +32,6 @@ public interface IOutboundItemRepository extends JpaRepository<OutboundItem, Int
             "left join o.manufacturer m " +
             "where (:startDate is null or :startDate <= ob.releaseDate) " +
             "and (:endDate is null or :endDate >= ob.releaseDate) " +
-            "and o.isDelete = false " +
             "and ob.isDelete = false " +
             "and ob.warehouse.id = :warehouseId " +
             "group by o.id, ob.id, ob.so, o.partNumber, " +
@@ -53,7 +45,6 @@ public interface IOutboundItemRepository extends JpaRepository<OutboundItem, Int
             "left join o.outboundItemSerials os " +
             "join o.outbound ob " +
             "where o.partNumber = :partNumber " +
-            "and o.isDelete = false " +
             "and ob.releaseDate < :startDate " +
             "group by o.id")
     List<Integer> countOutboundItem(

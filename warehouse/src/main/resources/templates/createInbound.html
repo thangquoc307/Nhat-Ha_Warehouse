@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Inbound</title>
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/css/modalStyle.css">
+
+    <script src="/bootstrap/bootstrap.bundle.js"></script>
+    <script src="/jquery-3.7.1.min.js"></script>
+    <script src="/js/util.js"></script>
+    <script src="/js/modalData.js"></script>
+</head>
+<body class="color3 scroll-custom">
+<div th:replace="template::header"></div>
+<form th:action="${'/publish/inbound'}"
+      method="post"
+      th:object="${createInboundDto}"
+      class="container">
+    <div class="color0 borderradius p-4 mt-3
+        boxshadow-outset pb-5">
+        <h3>Stock Note</h3>
+        <input th:field="*{id}" hidden="hidden">
+        <div class="mt-3">
+            <label class="form-label alert-require"
+                   for="warehouseId">Warehouse</label>
+            <select class="form-select" th:field="*{warehouseId}"
+                    id="warehouseId">
+                <option value="0">-- select warehouse --</option>
+                <option
+                        th:each="wh : ${warehouses}"
+                        th:value="${wh.getid()}"
+                        th:text="${wh.getName()}"></option>
+            </select>
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('warehouseId')}"
+               th:errors="*{warehouseId}"></p>
+        </div>
+        <div class="mt-3">
+            <label class="form-label alert-require"
+                   for="date">Release Date</label>
+            <input type="date" id="date"
+                   class="form-control form-text"
+                   th:field="*{releaseDate}">
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('releaseDate')}"
+               th:errors="*{releaseDate}"></p>
+        </div>
+        <div class="mt-3">
+            <label class="form-label alert-require"
+                   for="inboundCode">Inbound Code</label>
+            <input type="text" id="inboundCode"
+                   class="form-control form-text"
+                   placeholder="Inbound Code"
+                   th:field="*{inboundCode}">
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('inboundCode')}"
+               th:errors="*{inboundCode}"></p>
+        </div>
+        <div class="mt-3">
+            <label class="form-label"
+                   for="locationFrom">From</label>
+            <input type="text" id="locationFrom"
+                   class="form-control form-text"
+                   placeholder="From"
+                   th:field="*{locationFrom}">
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('locationFrom')}"
+               th:errors="*{locationFrom}"></p>
+        </div>
+        <div class="mt-3">
+            <label class="form-label"
+                   for="note">Note</label>
+            <textarea type="text" id="note"
+                   class="form-control form-text"
+                   placeholder="Note" th:field="*{note}"></textarea>
+            <p class="text-danger"
+               th:if="${#fields.hasErrors('note')}"
+               th:errors="*{note}"></p>
+        </div>
+        <div class="button-form mt-4">
+            <button type="reset">
+                <span class="material-symbols-outlined">restart_alt</span>
+                Reset</button>
+            <button type="submit">
+                <span class="material-symbols-outlined">check_circle</span>
+                Finish</button>
+        </div>
+    </div>
+</form>
+
+</body>
+</html>
