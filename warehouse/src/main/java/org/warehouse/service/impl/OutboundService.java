@@ -6,6 +6,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.warehouse.dto.*;
+import org.warehouse.dto.export.ExportItemDto;
+import org.warehouse.dto.export.ExportStockDto;
 import org.warehouse.model.Manufacturer;
 import org.warehouse.model.Saler;
 import org.warehouse.model.Warehouse;
@@ -238,5 +240,28 @@ public class OutboundService implements IOutboundService {
                     .get()
                     .getImage();
         }
+    }
+
+    @Override
+    public List<ExportStockDto> getDataForExport(LocalDate startDate, LocalDate endDate, Integer warehouseId, Boolean isInbound) {
+        List<ExportStockDto> list = isInbound
+                ? inboundRepository.getInboundExport(startDate, endDate, warehouseId)
+                : outboundRepository.getOutboundExport(startDate, endDate, warehouseId);
+        list.stream().forEach(exportStockDto -> {
+            List<ExportItemDto> itemDtos = isInbound
+                    ? inboundItemRepository.getListItem(exportStockDto.getId())
+                    : outboundItemRepository.getListItem(exportStockDto.getId());
+            itemDtos.stream().forEach(exportItemDto -> {
+                if (exportItemDto.getCount() == null) {
+                    List<String> serial = isInbound
+                            ? inboundItemSerialRepository.getSerial(exportItemDto.getId())
+                            : outboundIItemSerialRepository.getSerial(exportItemDto.getId());
+                    exportItemDto.setSerials(serial);
+                    exportItemDto.setCount(serial.size());
+                }
+            });
+            exportStockDto.setItemDtos(itemDtos);
+        });
+        return list;
     }
 }

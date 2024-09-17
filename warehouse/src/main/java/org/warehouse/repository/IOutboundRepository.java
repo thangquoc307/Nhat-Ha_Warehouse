@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.warehouse.dto.CreateOutboundDto;
 import org.warehouse.dto.IOutboundItemShowDto;
 import org.warehouse.dto.ItemDetailDto;
+import org.warehouse.dto.export.ExportStockDto;
 import org.warehouse.model.outbound.Outbound;
 
 import java.time.LocalDate;
@@ -96,5 +97,19 @@ public interface IOutboundRepository extends JpaRepository<Outbound, Integer> {
             @Param("note") String note,
             @Param("salerId") Integer salerId,
             @Param("warehouseId") Integer warehouseId,
+            @Param("id") Integer id);
+    @Query(value = "select new org.warehouse.dto.export.ExportStockDto(" +
+            "o.id, o.releaseDate, o.so, o.partner, s.name, o.note) " +
+            "from Outbound o " +
+            "join o.warehouse w " +
+            "left join o.saler s " +
+            "where (:startDate is null or o.releaseDate >= :startDate) " +
+            "and (:endDate is null or o.releaseDate <= :endDate) " +
+            "and o.isDelete = false " +
+            "and w.id = :id " +
+            "order by o.releaseDate ")
+    List<ExportStockDto> getOutboundExport(
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
             @Param("id") Integer id);
 }

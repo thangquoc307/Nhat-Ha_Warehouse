@@ -2,6 +2,7 @@ package org.warehouse.service;
 
 import org.springframework.data.domain.Page;
 import org.warehouse.dto.*;
+import org.warehouse.dto.export.ExportStockDto;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,4 +23,5 @@ public interface IOutboundService {
     void modifyItem(ItemCreateDto itemCreateDto);
     void createPdf(byte[] data, Integer id, Boolean isInbound);
     byte[] getImage(Integer id, Boolean isInbound);
+    List<ExportStockDto> getDataForExport(LocalDate startDate, LocalDate endDate, Integer warehouseId, Boolean isInbound);
 }

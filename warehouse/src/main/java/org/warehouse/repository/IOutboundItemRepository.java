@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.warehouse.dto.CompareDto;
 import org.warehouse.dto.ItemCreateDto;
 import org.warehouse.dto.TransferCompareDto;
+import org.warehouse.dto.export.ExportItemDto;
 import org.warehouse.model.outbound.OutboundItem;
 
 import java.time.LocalDate;
@@ -68,4 +69,10 @@ public interface IOutboundItemRepository extends JpaRepository<OutboundItem, Int
             @Param("description") String description,
             @Param("manufacturerId") Integer manufacturerId,
             @Param("id") Integer id);
+    @Query(value = "select new org.warehouse.dto.export.ExportItemDto(" +
+            "o.id, o.partNumber, o.description, o.count) " +
+            "from OutboundItem o " +
+            "join o.outbound ob " +
+            "where ob.id = :id")
+    List<ExportItemDto> getListItem(@Param("id") Integer id);
 }

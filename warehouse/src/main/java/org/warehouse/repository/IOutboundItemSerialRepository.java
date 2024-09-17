@@ -38,4 +38,9 @@ public interface IOutboundItemSerialRepository extends JpaRepository<OutboundIte
     @Transactional
     @Query(value = "update OutboundItemSerial i set i.serial = :serial where i.id = :id")
     void updateSerial(@Param("serial") String serial, @Param("id") Integer id);
+    @Query(value = "select o.serial " +
+            "from OutboundItemSerial o " +
+            "join o.outboundItem ob " +
+            "where ob.id = :id")
+    List<String> getSerial(@Param("id") Integer id);
 }

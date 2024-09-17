@@ -93,15 +93,15 @@ let setupData = () => {
 }
 let exportExcel = () => {
     const workbook = new ExcelJS.Workbook();
-    const sheet = workbook.addWorksheet('My Sheet');
+    const sheet = workbook.addWorksheet('Compare');
 
     let startDate = $("#start-date-input").val();
     let endDate = $("#end-date-input").val();
 
     sheet.addRow([
         "DANH MỤC HÀNG HÓA VÀ NHẬP XUẤT TỒN KHO", "", "",
-        "Từ Ngày", startDate == "" ? "" : coverDate(startDate),
-        "Đến Ngày", endDate == "" ? "" : coverDate(endDate)])
+        "Từ Ngày", startDate === "" ? "" : coverDate(startDate),
+        "Đến Ngày", endDate === "" ? "" : coverDate(endDate)])
     sheet.mergeCells('A1:C1');
     sheet.addRow([]);
     sheet.mergeCells('A2:G2');

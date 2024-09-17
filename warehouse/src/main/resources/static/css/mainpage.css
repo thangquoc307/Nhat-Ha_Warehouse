@@ -149,7 +149,7 @@
 }
 .table-title {
     display: grid;
-    grid-template-columns: 350px 120px 1fr;
+    grid-template-columns: 350px 100px 200px 1fr;
 }
 .search-tool {
     display: grid;
@@ -206,4 +206,25 @@
     transition-duration: 0.2s;
     background-color: var(--color-5);
     scale: 1.1;
+}
+.button-excel {
+    background-color: var(--color-6);
+    border-radius: 50px;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: 1fr repeat(2, 30px);
+    align-items: center;
+    gap: 5px;
+    font-weight: bold;
+    color: var(--color-0);
+}
+.button-excel>span {
+    background-color: var(--color-0);
+    color: var(--color-6);
+    transition-duration: 0.2s;
+}
+.button-excel>span:hover{
+    background-color: var(--color-5);
+    color: var(--color-0);
+    transition-duration: 0.2s;
 }

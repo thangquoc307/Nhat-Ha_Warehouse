@@ -6,6 +6,7 @@ import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.warehouse.dto.*;
+import org.warehouse.dto.export.ExportStockDto;
 import org.warehouse.service.IOutboundService;
 
 import java.time.LocalDate;
@@ -152,5 +153,26 @@ public class WarehouseRestController {
         headers.setContentDisposition(ContentDisposition.inline()
                 .filename("file.pdf").build());
         return new ResponseEntity<>(image, headers, HttpStatus.OK);
+    }
+    @GetMapping("export-data")
+    public ResponseEntity<?> getOutboundItemForExport(
+            @RequestParam(
+                    name = "startDate",
+                    required = false) LocalDate startDate,
+            @RequestParam(
+                    name = "endDate",
+                    required = false) LocalDate endDate,
+            @RequestParam(
+                    name = "warehouseId",
+                    required = false,
+                    defaultValue = "1") Integer warehouseId,
+            @RequestParam(name = "isInbound") boolean isInbound) {
+        List<ExportStockDto> exportStockDtos = outboundService.getDataForExport(
+                startDate, endDate, warehouseId, isInbound);
+        if (exportStockDtos.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(exportStockDtos, HttpStatus.OK);
+        }
     }
 }

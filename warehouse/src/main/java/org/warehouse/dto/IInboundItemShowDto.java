@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 public interface IInboundItemShowDto {
     Integer getId();
-    byte[] getImage();
     String getInboundCode();
     String getLocationFrom();
     String getNote();
@@ -12,5 +11,6 @@ public interface IInboundItemShowDto {
     Integer getCount();
     String getDescription();
     String getPartNumber();
+    byte[] getImage();
     String getName();
 }

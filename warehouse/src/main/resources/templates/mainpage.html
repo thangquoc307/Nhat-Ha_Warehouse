@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/css/modifyData.css">
     <link rel="stylesheet" href="/bootstrap/bootstrap.css">
 
+    <script src="/exceljs.min.js"></script>
+    <script src="/FileSaver.min.js"></script>
     <script src="/jquery-3.7.1.min.js"></script>
     <script src="/bootstrap/bootstrap.bundle.js"></script>
     <script src="/js/modalData.js"></script>
@@ -20,6 +22,7 @@
     <script src="/js/mainpage.js"></script>
     <script src="/js/popupCrud.js"></script>
     <script src="/js/modifyData.js"></script>
+    <script src="/js/excelExport.js"></script>
 </head>
 <body class="color3">
 <div th:replace="template::header"></div>
@@ -41,7 +44,6 @@
                             th:text="${warehouse.getName()}"></option>
                 </select>
             </div>
-
             <div class="d-flex gap-2 p-1">
                 <input type="radio" class="btn-check stock-mode-input"
                        name="stock-mode" id="output" checked
@@ -54,6 +56,13 @@
                        onchange="pageableLoad(0)">
                 <label class="material-symbols-outlined stock-mode-lable"
                        for="input" title="Inbound">download</label>
+            </div>
+            <div class="button-excel">
+                Export Excel
+                <span class="material-symbols-outlined stock-mode-lable"
+                       for="output" title="Outbound" onclick="excelExport(false)">upload</span>
+                <span class="material-symbols-outlined stock-mode-lable"
+                       for="input" title="Inbound" onclick="excelExport(true)">download</span>
             </div>
 
             <h4 class="targetText">THÔNG TIN XUẤT/NHẬP KHO</h4>
