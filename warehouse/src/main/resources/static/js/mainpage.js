@@ -507,9 +507,9 @@ let gotoModifyStock = (isCreate) => {
 let gotoModifyItem = (editId) => {
     $(function () {
         if (editId !== 0 && (outboundChoosedId !== 0 || inboundChoosedId !== 0)) {
-            gotoLink(`/publish/item?is-inbound=${inboundChoosedId !== 0 ? 1 : 0}&id=${editId}&stock-id=${outboundChoosedId}`);
+            gotoLink(`/publish/item?is-inbound=${inboundChoosedId !== 0 ? 1 : 0}&id=${editId}&stock-id=${inboundChoosedId !== 0 ? inboundChoosedId : outboundChoosedId}`);
         } else if (outboundChoosedId !== 0 || inboundChoosedId !== 0) {
-            gotoLink(`/publish/item?is-inbound=${inboundChoosedId !== 0 ? 1 : 0}&stock-id=${outboundChoosedId}`);
+            gotoLink(`/publish/item?is-inbound=${inboundChoosedId !== 0 ? 1 : 0}&stock-id=${inboundChoosedId !== 0 ? inboundChoosedId : outboundChoosedId}`);
         }
     })
 }
