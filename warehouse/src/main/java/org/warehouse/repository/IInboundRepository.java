@@ -19,7 +19,7 @@ import java.util.List;
 public interface IInboundRepository extends JpaRepository<Inbound, Integer> {
     @Query(nativeQuery = true, value = "select i.id, i.image, i.inbound_code, " +
             "i.location_from, i.note, i.release_date, " +
-            "IFNULL(ii.count, count(ii.id)) as count, " +
+            "IFNULL(ii.count, count(iis.id)) as count, " +
             "ii.description, ii.part_number, m.name " +
             "from inbounds i " +
             "left join inbound_items ii on i.id = ii.inbound_id " +

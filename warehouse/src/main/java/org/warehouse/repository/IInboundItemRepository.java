@@ -18,7 +18,7 @@ import java.util.List;
 public interface IInboundItemRepository extends JpaRepository<InboundItem, Integer> {
     @Transactional
     @Modifying
-    @Query(value = "update OutboundItem i set i.count = :count where i.id = :id")
+    @Query(value = "update InboundItem i set i.count = :count where i.id = :id")
     void editCount(@Param("id") Integer id, @Param("count") Integer count);
     @Query(value = "select new org.warehouse.dto.ItemCreateDto (" +
             "i.id, i.partNumber, i.description, " +

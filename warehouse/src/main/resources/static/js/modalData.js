@@ -20,7 +20,7 @@ let showDeleteModal = (id, name, modeStt) => {
         id = outboundChoosedId;
     } else if (modeStt == mode.INBOUND) {
         name = inboundChoosedName;
-        id = inboundChoosedName;
+        id = inboundChoosedId;
     }
     if (id == 0) {
         return;
