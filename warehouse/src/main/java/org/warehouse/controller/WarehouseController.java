@@ -19,9 +19,15 @@ public class WarehouseController {
     @Autowired
     private IOutboundService outboundService;
     @GetMapping("home")
-    public String mainmenu(Model model) {
+    public String mainmenu(
+            @RequestParam(
+                    required = false,
+                    defaultValue = "1") Integer isInbound,
+            Model model
+    ) {
         List<IWarehouseDto> warehouseDtos = outboundService.getAllWarehouse();
         model.addAttribute("warehouses", warehouseDtos);
+        model.addAttribute("isInbound", isInbound);
         return "mainpage";
     }
     @GetMapping("compare")
@@ -84,7 +90,7 @@ public class WarehouseController {
             return "createInbound";
         } else {
             outboundService.modifyInbound(createInboundDto);
-            return "redirect:/publish/home";
+            return "redirect:/publish/home?isInbound=1";
         }
     }
     @PostMapping("outbound")
@@ -101,7 +107,7 @@ public class WarehouseController {
             return "createOutbound";
         } else {
             outboundService.modifyOutbound(createOutboundDto);
-            return "redirect:/publish/home";
+            return "redirect:/publish/home?isInbound=0";
         }
     }
     @GetMapping("item")
@@ -137,7 +143,11 @@ public class WarehouseController {
             return "createItem";
         } else {
             outboundService.modifyItem(itemCreateDto);
-            return "redirect:/publish/home";
+            if (itemCreateDto.getIsInbound() == 0) {
+                return "redirect:/publish/home?isInbound=0";
+            } else {
+                return "redirect:/publish/home?isInbound=1";
+            }
         }
     }
 }

@@ -61,7 +61,7 @@ let deleteContent = (id, sttMode) => {
         success: (result, status, xhr) => {
             switch (sttMode) {
                 case mode.WAREHOUSE:
-                    gotoLink("/publish/home");
+                    gotoLink(`/publish/home?isInbound=${isInbound ? 1 : 0}`);
                     break;
                 case mode.OUTBOUND:
                 case mode.INBOUND:

@@ -41,7 +41,7 @@ let excelExport = (isInbound) => {
                 if (isInbound) {
                     sheet.getColumn('H').width = 40;
                     sheet.addRow([
-                        "DANH MỤC HÀNG HÓA XUẤT KHO", "", "", "", "",
+                        "DANH MỤC HÀNG HÓA NHẬP KHO", "", "", "", "",
                         `Từ ${startDate === "" ? "--/--/----" : coverDate(startDate)} đến ${endDate === "" ? "--/--/----" : coverDate(endDate)}`]);
                     sheet.mergeCells('A1:E1');
                     sheet.mergeCells('F1:H1');
@@ -83,7 +83,7 @@ let excelExport = (isInbound) => {
                     sheet.getColumn('H').width = 20;
                     sheet.getColumn('I').width = 40;
                     sheet.addRow([
-                        "DANH MỤC HÀNG HÓA NHẬP KHO", "", "", "", "",
+                        "DANH MỤC HÀNG HÓA XUẤT KHO", "", "", "", "",
                         `Từ ${startDate === "" ? "--/--/----" : coverDate(startDate)} đến ${endDate === "" ? "--/--/----" : coverDate(endDate)}`]);
                     sheet.mergeCells('A1:E1');
                     sheet.mergeCells('F1:I1');

@@ -528,7 +528,7 @@ let uploadPdf = async (id) => {
                     processData: false,
                     contentType: false
                 });
-                gotoLink("/publish/home");
+                gotoLink(`/publish/home?isInbound=${isInbound ? 1 : 0}`);
             } catch (error) {
                 console.error("Upload failed", error);
             }

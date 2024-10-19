@@ -12,7 +12,7 @@ class DataEdit {
 }
 let closePopup = (isReload) => {
     if (isEdited && isReload) {
-        gotoLink("/publish/home");
+        gotoLink(`/publish/home${isInbound ? 1 : 0}`);
     } else {
         $(`#popup`).fadeOut(500, function() {
             $(this).remove();

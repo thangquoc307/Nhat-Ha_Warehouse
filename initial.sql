@@ -374,3 +374,19 @@ and (isnull(null) or '2024-07-09' >= ob.release_date)
             and ob.is_delete = 0
             and ob.warehouse_id = 1
             group by o.id, ob.id
+
+
+select o.release_date, oi.part_number, oi.description, oi.count, o.so, o.partner,s.name
+    from outbound_items oi
+    join outbounds o on oi.outbound_id = o.id
+    join warehouses w on w.id = o.warehouse_id
+    left join salers s on o.sale_id = s.id
+    where o.is_delete = 0
+    and w.id = 1
+    and ('2024-07-07' is null or o.release_date >= '2024-07-07')
+    and ('2025-07-07' is null or o.release_date <= '2025-07-07');
+
+select * from outbound_items o
+left join outbound_items_serials ois on o.id = ois.outbound_item_id
+where o.id = 2
+
