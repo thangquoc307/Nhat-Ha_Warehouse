@@ -36,7 +36,7 @@ public interface IInboundRepository extends JpaRepository<Inbound, Integer> {
             "AND i.warehouse_id = :warehouseId " +
             "AND i.is_delete = 0 " +
             "GROUP BY i.id, i.release_date, i.inbound_code, ii.id " +
-            "ORDER BY i.id, i.release_date DESC, i.inbound_code;",
+            "ORDER BY i.id DESC, i.release_date DESC, i.inbound_code;",
             countQuery = "select count(*) from (" +
                     "select i.id " +
                     "from inbounds i " +
