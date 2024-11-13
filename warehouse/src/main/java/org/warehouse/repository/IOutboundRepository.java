@@ -36,7 +36,7 @@ public interface IOutboundRepository extends JpaRepository<Outbound, Integer> {
             "and o.warehouse_id = :warehouseId " +
             "and o.is_delete = 0 " +
             "group by i.id, o.release_date, o.so, o.id " +
-            "order by o.release_date desc, o.so;",
+            "order by o.id, o.release_date desc, o.so;",
             countQuery = "select count(*) from (" +
                     "select i.id " +
                     "from outbounds o " +

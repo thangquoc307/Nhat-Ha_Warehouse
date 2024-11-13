@@ -29,7 +29,7 @@ let showToast = (mess) => {
 }
 let countInArray = (array, item) => {
     let count = 0;
-    array.forEach(value => {if (item == value) count++;})
+    array.forEach(value => {if (item === value) count++;})
     return count;
 }
 let reduceText = (text, size) => {
